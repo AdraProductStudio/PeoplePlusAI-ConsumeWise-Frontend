@@ -1,0 +1,188 @@
+.chatpage-component * {
+    font-family: Inter;
+}
+
+.chat-container {
+    position: relative;
+    width: 70%;
+    margin: 0 auto;
+    height: 80vh;
+    border-radius: 18px;
+    background: #FFF;
+    padding: 2rem 4.188rem;
+}
+
+.back-icon svg {
+    border-radius: 32px;
+    background: rgba(219, 219, 219, 0.40);
+    backdrop-filter: blur(25px);
+}
+
+.sending-receiving-message-container {
+    margin-top: 1.5rem;
+    height: 75%;
+    overflow-y: auto;
+    position: relative;
+}
+
+.sending-message-container {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    margin-bottom: 2.563rem;
+    position: absolute;
+    right: 0;
+    bottom: 290px;
+}
+
+.sending-message {
+    padding: 0.938rem 1.5rem 0.938rem 1.563rem;
+    border-radius: 14px 1px 14px 14px;
+    border: 1.159px solid rgba(134, 146, 166, 0.20);
+    background: #005C75;
+    margin-right: 0;
+    color: #FFF;
+    font-family: Inter;
+    font-size: 1.014rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.sending-message-time {
+    color: #757575;
+    font-family: Inter;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.12px;
+    margin-top: 0.5rem;
+}
+
+
+.receiving-message-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-bottom: 2.563rem;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.receiving-message {
+    border-radius: 1px 18px 18px 18px;
+    border: 1.159px solid rgba(134, 146, 166, 0.20);
+    background: #FFF;
+    padding: 0.938rem 1.5rem 0.938rem 1.563rem;
+    margin-right: 0;
+    font-family: Inter;
+    font-size: 1.014rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.recommendation-text {
+    color: #161616;
+    font-family: "BespokeStencil-Variable";
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 150%;
+    letter-spacing: -0.36px;
+}
+
+.horizontal-line {
+    color: grey;
+    height: 1px;
+}
+
+.default-receiving-suggestions-container {
+    display: flex;
+    gap: 1.159rem;
+    margin: 0.875rem 0;
+}
+
+.default-receiving-suggestion {
+    padding: 1.159rem;
+    border-radius: 9.274px;
+    border: 1.159px solid #005C75;
+    backdrop-filter: blur(26.66204833984375px);
+    color: #005C75;
+    font-family: Inter;
+    font-size: 1.014rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    height:2.898rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.receiving-message-time {
+    color: #757575;
+    font-family: Inter;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: -0.12px;
+}
+
+
+
+.chat-textarea-section {
+    left: 0rem;
+    bottom: 2.313rem;
+    width: 100%;
+    padding: 0 4.188rem;
+
+}
+
+.chat-textarea-container {
+    border-radius: 4px 0px 0px 4px;
+    background: #B6D4DA;
+    height: 4.125rem;
+    width: 100%;
+    padding: 0 2.0rem;
+    padding-left: 1rem;
+}
+
+.chat-textarea-field {
+    height: 2.5rem;
+    border-radius: 5px;
+    background: #FFF;
+    resize: none;
+    border: none;
+    outline: none;
+    line-height: 2.5rem;
+    padding: 0 0.625rem;
+    width: 100%;
+    margin: auto 0;
+}
+
+.record-icon {
+    position: absolute;
+    right: 1rem;
+    top: 0.7rem;
+}
+
+.chatpage-component .vertical-line {
+    width: 0.58px;
+    height: 24px;
+    background: #8692A6;
+}
+
+.send-btn-container {
+    display: flex;
+    width: 5.313rem;
+    height: 4.125rem;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 0px 4px 4px 0px;
+    background: #005C75;
+}
