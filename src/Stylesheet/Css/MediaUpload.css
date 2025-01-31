@@ -1,0 +1,159 @@
+.media-upload-component * {
+    font-family: Inter;
+}
+
+.media-upload-component .media-upload-full-container {
+    position: relative;
+    width: 70%;
+    margin: 0 auto;
+    height: 80vh;
+    border-radius: 18px;
+    background: #FFF;
+    padding: 2rem 4.188rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.media-upload-component .back-icon-container{
+    position: absolute;
+    top: 2rem;
+    left:  4.188rem;
+}
+
+.media-upload-component .media-upload-full-container .media-upload-container {
+    /* margin-top: 7.924rem; */
+    /* position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); */
+    border-radius: 13.939px;
+    background: #FFF;
+    box-shadow: 0px 5.99px 37.44px 0px rgba(7, 5, 26, 0.07);
+    padding: 1.742rem;
+    /* width: 70%; */
+    /* min-width: 743.432px; */
+    max-width: 743.432px;
+    /* Restrict max width */
+}
+
+.media-upload-full-container .media-upload-container .media-upload-text {
+    color: #181D27;
+    font-family: Inter;
+    font-size: 20.909px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 2.033rem;
+}
+
+.media-upload-full-container .media-upload-container .media-upload-sub-text {
+    color: #6C606C;
+    font-family: "DM Sans";
+    font-size: 16.263px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.452rem;
+}
+
+.media-upload-full-container .back-icon svg {
+    border-radius: 32px;
+    background: rgba(219, 219, 219, 0.40);
+    backdrop-filter: blur(25px);
+}
+
+.media-upload-full-container .drop-file-container {
+    margin-top: 2.323rem;
+    border-radius: 8.882px 8.882px 0px 0px;
+    border: 1.11px dashed #005C75;
+    padding: 5vh 10vw;
+    margin-left: 0.95rem;
+    margin-right: 0.95rem;
+    max-width: 100%;
+}
+
+
+.media-upload-full-container .drop-file-container .drop-file-text {
+    color: #181D27;
+    font-family: "DM Sans";
+    font-size: 1.11rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.665rem;
+}
+
+.media-upload-full-container .drop-file-container .drop-file-sub-text {
+    color: #6C606C;
+    font-family: "DM Sans";
+    font-size: 0.971rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.388rem;
+}
+
+
+.media-upload-full-container .browse-file-container {
+    margin-top: 1.806rem;
+
+}
+
+.media-upload-full-container .browse-file-container .browse-button {
+    border-radius: 116.161px;
+    background: #E7F1F3;
+    box-shadow: 0px 1.162px 2.323px 0px rgba(5, 32, 81, 0.05);
+    padding: 0.726rem 1.162rem;
+    width: 13.625rem;
+}
+
+.media-upload-full-container .browse-file-container .browse-text {
+    margin-left: 0.726rem;
+}
+
+.media-upload-full-container .browse-file-container .browse-file-sub-text {
+    margin-top: 0.581rem;
+    color: #6C606C;
+    text-align: center;
+    font-family: "DM Sans";
+    font-size: 1.016rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.452rem;
+}
+
+.media-upload-full-container .upload-progress-container {
+    margin-top: 1.25rem;
+    border-radius: 18.523px;
+    background: #fff;
+    box-shadow: 0px 5.99px 37.44px 0px rgba(7, 5, 26, 0.07);
+    padding: 1.544rem;
+}
+.media-upload-full-container .upload-text-container{
+    width: 90%;
+}
+.media-upload-full-container .upload-progress-container .uploading-text{
+    color: #0B0B0B;
+    font-family: Inter;
+    font-size: 1.158rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 1.737rem;
+}
+.media-upload-full-container .upload-progress-container .in-progress-text{
+    color: #6D6D6D;
+    font-family: Inter;
+    font-size: 1.158rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.544rem; 
+}
+.media-upload-full-container .progress-bar-container{
+    margin-top: 0.77rem;
+}
+.media-upload-full-container .progress-bar-container .progress{
+    background-color: #FAFAFA;
+    border-radius: 154.36px;
+
+}
+.media-upload-full-container .progress-bar-container .progress-bar{
+    background-color: #005C75;
+
+}

@@ -67,7 +67,7 @@ const Home = () => {
                             Search for products</>}
                     />
                 </Link>
-                <Link to="/chat">
+                <Link to="/media-upload">
                     <ButtonComponent
                         className={'homepage-button'}
                         buttonName={<>

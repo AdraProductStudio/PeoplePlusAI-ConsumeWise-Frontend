@@ -13,6 +13,7 @@ import AdminAuth from "Views/Admin/Docs/AdminAuth";
 import Layout from "Views/Admin/Layout/Layout";
 import Home from "Home";
 import ChatPage from "ChatPage";
+import MediaUpload from "MediaUpload";
 
 
 const App = () => {
@@ -25,7 +26,8 @@ const App = () => {
         
         <Route element={<InitializeProjectSetup />}>
           <Route path="/" element={<Home />} />
-          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/chat" element={<ChatPage/>} />
+          <Route path="/media-upload" element={<MediaUpload />} />
          
 
           <Route path="*" element={<Error />} />

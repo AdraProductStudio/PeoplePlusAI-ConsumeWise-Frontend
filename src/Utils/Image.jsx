@@ -7,6 +7,7 @@ const testCompletedImage = require('Assets/Images/Done-rafiki 1.png')
 const consumerWise = require('Assets/Images/consumer-wise.png')
 const bodyTopImage = require('Assets/Images/top.png')
 const bodyBottomImage = require('Assets/Images/bottom.png')
+const horlicksImg = require('Assets/Images/horlicks.png')
 
 
 const Image = {
@@ -17,7 +18,8 @@ const Image = {
     testCompletedImage,
     consumerWise,
     bodyTopImage,
-    bodyBottomImage
+    bodyBottomImage,
+    horlicksImg
 }
 
 export default Image; 

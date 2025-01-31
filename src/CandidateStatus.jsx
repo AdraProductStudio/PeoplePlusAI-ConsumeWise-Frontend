@@ -126,33 +126,33 @@ const CandidateStatus = () => {
       <div className="container-fluid mt-2">
         <div className="card">
           <div className="card-body">
-            <div class="d-flex">
+            <div className="d-flex">
               <h5 className="flex-grow-1">Candidate Aptitute Results</h5>
 
               <h6>
-                Technical <span class="badge text-bg-primary me-2">40</span>                
+                Technical <span className="badge text-bg-primary me-2">40</span>                
               </h6>
               
               <h6>
-                Quantitative <span class="badge text-bg-primary me-2">20</span>
+                Quantitative <span className="badge text-bg-primary me-2">20</span>
               </h6>
               <h6>
-                Total <span class="badge text-bg-danger">60</span>
+                Total <span className="badge text-bg-danger">60</span>
               </h6>
             </div>
             <hr/>
-            <div class="d-flex">
+            <div className="d-flex">
               <h5 className="flex-grow-1">Cut-off</h5>
 
               <h6>
-                Technical <span class="badge text-bg-secondary me-2">20</span>                
+                Technical <span className="badge text-bg-secondary me-2">20</span>                
               </h6>
               
               <h6>
-                Quantitative <span class="badge text-bg-secondary me-2">10</span>
+                Quantitative <span className="badge text-bg-secondary me-2">10</span>
               </h6>
               <h6>
-                Total <span class="badge text-bg-success">30</span>
+                Total <span className="badge text-bg-success">30</span>
               </h6>
             </div>
           </div>

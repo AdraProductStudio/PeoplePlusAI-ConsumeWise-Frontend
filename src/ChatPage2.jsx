@@ -1,13 +1,12 @@
 import React from 'react'
-import HeaderCard from 'Components/Card/HeaderCard'
-import './Stylesheet/Css/ChatPage.css'
-import { Link } from 'react-router-dom'
 import Image from 'Utils/Image'
 import Img from 'Components/Img/Img'
+import HeaderCard from 'Components/Card/HeaderCard'
+// import './Stylesheet/Css/ChatPage2.css'
+import { Link } from 'react-router-dom'
 
 
-
-const ChatPage = () => {
+const ChatPage2 = () => {
     return (
         <section className='chatpage-component'>
 
@@ -35,30 +34,26 @@ const ChatPage = () => {
             />
 
             <div className="chat-container ">
-                <Link to="/" className="back-icon cup">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44" fill="none">
-                        <path d="M29.0711 21.9992L14.9289 21.9992M14.9289 21.9992L20.2322 27.3025M14.9289 21.9992L20.2322 16.6959" stroke="#005C75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </Link>
+                <div className='back-icon-container'>
+                    <Link to="/" className="back-icon cup">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44" fill="none">
+                            <path d="M29.0711 21.9992L14.9289 21.9992M14.9289 21.9992L20.2322 27.3025M14.9289 21.9992L20.2322 16.6959" stroke="#005C75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </Link>
+                </div>
 
-                {/* Sending-Receiving messages-container */}
-                <div className='sending-receiving-message-container'>
+                <div className='sending-receiving-message-container d-flex flex-column justify-content-end '>
                     <div className="sending-message-container">
                         <p className="mb-0 sending-message">Horlicks</p>
-                        {/* <Img
-                            className=""
-                            src={Image.horlicksImg}
-                            alt="peoplePlusAI-logo"
-                        /> */}
                         <p className="mb-0 sending-message-time">09.30AM</p>
                     </div>
                     <div className="receiving-message-container">
                         <div className="mb-0 receiving-message">
                             <p className='recommendation-text'>Recommendation</p>
                             <p className='mb-4'>Horlicks is a nutritional drink that provides essential vitamins and minerals to support overall health and well-being. It is designed to boost energy, strengthen the immune system, and promote growth and development.</p>
-                            {/* <hr className='horizontal-line' /> */}
+                            <hr className='horizontal-line' />
                             <div className='mb-0 d-flex gap-4 align-items-center'>
-                                {/* <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
                                     <path d="M2.43172 14.1841V6.06954H0.113281V14.1841H2.43172Z" fill="#8692A6" />
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M5.90938 4.02475L4.75016 6.34319V13.0249H10.989L12.8647 9.27354V6.64914C12.8647 6.32903 12.6052 6.06954 12.2851 6.06954H7.0686V2.01227C7.0686 1.69216 6.8091 1.43266 6.48899 1.43266H5.90938V4.02475ZM4.75016 0.273438H6.48899C7.44932 0.273438 8.22782 1.05194 8.22782 2.01227V4.91032H12.2851C13.2454 4.91032 14.0239 5.68882 14.0239 6.64914V9.54719L11.7055 14.1841H3.59094V6.06954L4.75016 3.7511V0.273438Z" fill="#8692A6" />
                                 </svg>
@@ -68,8 +63,8 @@ const ChatPage = () => {
                                 </svg>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
                                     <path d="M10.8281 0.273438H2.0424C1.23339 0.273438 0.578125 0.839347 0.578125 1.53804V10.3903H2.0424V1.53804H10.8281V0.273438ZM13.0245 2.80264H4.97096C4.16194 2.80264 3.50668 3.36855 3.50668 4.06725V12.9195C3.50668 13.6182 4.16194 14.1841 4.97096 14.1841H13.0245C13.8335 14.1841 14.4888 13.6182 14.4888 12.9195V4.06725C14.4888 3.36855 13.8335 2.80264 13.0245 2.80264ZM13.0245 12.9195H4.97096V4.06725H13.0245V12.9195Z" fill="#8692A6" />
-                                </svg> */}
-                                {/* <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M8.73786 5.14216H11.978C12.1498 5.14216 12.3147 5.06888 12.4362 4.93844C12.5577 4.80801 12.626 4.63109 12.626 4.44663V0.968969C12.626 0.784503 12.5577 0.607591 12.4362 0.477154C12.3147 0.346716 12.1498 0.273438 11.978 0.273438C11.8061 0.273438 11.6413 0.346716 11.5197 0.477154C11.3982 0.607591 11.3299 0.784503 11.3299 0.968969V2.26695C11.0058 1.92524 10.6478 1.61963 10.261 1.35615C9.28947 0.694411 8.1713 0.322252 7.02139 0.277921C5.87149 0.23359 4.73132 0.518685 3.71807 1.10391C2.70481 1.68914 1.855 2.55338 1.25598 3.60784C0.656959 4.66229 0.330323 5.86893 0.309641 7.10374C0.288959 8.33855 0.574976 9.557 1.1383 10.6339C1.70162 11.7108 2.52194 12.6072 3.51494 13.2312C4.50795 13.8551 5.63783 14.184 6.78848 14.1841C8.50713 14.1841 10.1554 13.4513 11.3707 12.1469C12.5859 10.8425 13.2687 9.07342 13.2687 7.22875C13.2687 7.04429 13.2004 6.86738 13.0789 6.73694C12.9573 6.6065 12.7925 6.53322 12.6206 6.53322C12.4488 6.53322 12.284 6.6065 12.1624 6.73694C12.0409 6.86738 11.9726 7.04429 11.9726 7.22875C11.9738 8.59026 11.5098 9.90496 10.6685 10.924C9.82722 11.943 8.66705 12.5955 7.40762 12.7582C6.1482 12.9208 4.87694 12.5821 3.83451 11.8063C2.79209 11.0305 2.05085 9.87142 1.75112 8.54847C1.45139 7.22551 1.61399 5.83052 2.20812 4.62759C2.80225 3.42465 3.78668 2.49727 4.97504 2.02101C6.1634 1.54474 7.47321 1.55266 8.65649 2.04325C9.5148 2.39911 10.2633 2.99101 10.8317 3.7511H8.73786C8.566 3.7511 8.40117 3.82438 8.27964 3.95481C8.15812 4.08525 8.08984 4.26216 8.08984 4.44663C8.08984 4.63109 8.15812 4.80801 8.27964 4.93844C8.40117 5.06888 8.566 5.14216 8.73786 5.14216Z" fill="#8692A6" />
                                 </svg>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
@@ -91,7 +86,7 @@ const ChatPage = () => {
                                             <rect width="16" height="16" fill="white" />
                                         </clipPath>
                                     </defs>
-                                </svg> */}
+                                </svg>
                             </div>
                         </div>
                         <div className='default-receiving-suggestions-container'>
@@ -101,12 +96,28 @@ const ChatPage = () => {
                         </div>
 
                         <p className="mb-0 receiving-message-time">09.30AM</p>
+                    </div> 
+
+                    <div className="sending-message-container">
+                        <p className="mb-0 sending-message">Horlicks</p>
+                        <p className="mb-0 sending-message-time">09.30AM</p>
                     </div>
+                    <div className="sending-message-container">
+                        <p className="mb-0 sending-message">Horlicks</p>
+                        <p className="mb-0 sending-message-time">09.30AM</p>
+                    </div>
+
+              
+                 
+               
+                  
+
+                   
+                  
                 </div>
 
 
-                {/* Text area field */}
-                <div className="chat-textarea-section position-absolute d-flex align-items-center ">
+                <div className="chat-textarea-section  d-flex align-items-center ">
                     <div className='chat-textarea-container d-flex align-items-center '>
                         <div className='position-relative w-100 me-4 d-flex align-items-center'>
                             <textarea className='chat-textarea-field ' type="text" placeholder='Type here..' />
@@ -117,7 +128,7 @@ const ChatPage = () => {
                                 <path d="M8.90625 8.73359C9.90625 8.45859 10.9646 8.45859 11.9646 8.73359" stroke="#232323" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </div>
-                        <div className='d-flex align-items-center'>
+                        <div className='d-flex gap-4 align-items-center'>
                             <svg className="cup" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <mask id="mask0_230_1393" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
                                     <rect x="0.0957031" y="0.408203" width="23.1844" height="23.1844" fill="#D9D9D9" />
@@ -129,7 +140,7 @@ const ChatPage = () => {
 
                             <div className="vertical-line"></div>
 
-                            {/* <svg className="cup" xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
+                            <svg className="cup" xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
                                 <g clip-path="url(#clip0_230_1397)">
                                     <path d="M13.7083 12.5007C13.7083 12.7217 13.6205 12.9336 13.4643 13.0899C13.308 13.2462 13.096 13.334 12.875 13.334H11.2083V15.0007C11.2083 15.2217 11.1205 15.4336 10.9643 15.5899C10.808 15.7462 10.596 15.834 10.375 15.834C10.154 15.834 9.94202 15.7462 9.78574 15.5899C9.62946 15.4336 9.54167 15.2217 9.54167 15.0007V13.334H7.875C7.65399 13.334 7.44202 13.2462 7.28574 13.0899C7.12946 12.9336 7.04167 12.7217 7.04167 12.5007C7.04167 12.2796 7.12946 12.0677 7.28574 11.9114C7.44202 11.7551 7.65399 11.6673 7.875 11.6673H9.54167V10.0007C9.54167 9.77964 9.62946 9.56768 9.78574 9.4114C9.94202 9.25512 10.154 9.16732 10.375 9.16732C10.596 9.16732 10.808 9.25512 10.9643 9.4114C11.1205 9.56768 11.2083 9.77964 11.2083 10.0007V11.6673H12.875C13.096 11.6673 13.308 11.7551 13.4643 11.9114C13.6205 12.0677 13.7083 12.2796 13.7083 12.5007ZM20.375 6.66732V15.0007C20.3737 16.1053 19.9343 17.1644 19.1532 17.9455C18.372 18.7266 17.313 19.166 16.2083 19.1673H4.54167C3.437 19.166 2.37796 18.7266 1.59685 17.9455C0.815735 17.1644 0.376323 16.1053 0.375 15.0007L0.375 5.00065C0.376323 3.89599 0.815735 2.83695 1.59685 2.05583C2.37796 1.27472 3.437 0.835308 4.54167 0.833984H6.64833C7.03617 0.834306 7.41866 0.924439 7.76583 1.09732L10.3958 2.41732C10.512 2.47309 10.6394 2.50159 10.7683 2.50065H16.2083C17.313 2.50197 18.372 2.94139 19.1532 3.7225C19.9343 4.50362 20.3737 5.56266 20.375 6.66732ZM2.04167 5.00065V5.83398H18.555C18.3833 5.34823 18.0656 4.92739 17.6456 4.62906C17.2255 4.33072 16.7236 4.16945 16.2083 4.16732H10.7683C10.3805 4.167 9.99801 4.07686 9.65083 3.90398L7.02083 2.58815C6.90497 2.53094 6.77755 2.50101 6.64833 2.50065H4.54167C3.87863 2.50065 3.24274 2.76404 2.7739 3.23288C2.30506 3.70173 2.04167 4.33761 2.04167 5.00065ZM18.7083 15.0007V7.50065H2.04167V15.0007C2.04167 15.6637 2.30506 16.2996 2.7739 16.7684C3.24274 17.2373 3.87863 17.5007 4.54167 17.5007H16.2083C16.8714 17.5007 17.5073 17.2373 17.9761 16.7684C18.4449 16.2996 18.7083 15.6637 18.7083 15.0007Z" fill="#232323" />
                                 </g>
@@ -145,7 +156,7 @@ const ChatPage = () => {
                             <svg className="cup" xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
                                 <path d="M13.8031 2.49983H16.3031M17.5697 17.0115C17.8264 16.699 17.9697 16.2748 17.9697 15.8332V5.83317C17.9697 5.3915 17.8264 4.9665 17.5697 4.65483C17.3156 4.3415 16.9689 4.1665 16.6072 4.1665H9.12306C7.68556 4.1665 7.40723 2.724 6.15889 2.5215C5.93889 2.48567 5.71056 2.49983 5.48806 2.49983C4.69389 2.49983 4.29723 2.49983 3.98473 2.63233C3.58721 2.8013 3.27082 3.11799 3.10223 3.51567C2.96973 3.8265 2.96973 4.22317 2.96973 5.01733V15.8332C2.96973 16.2748 3.11306 16.6998 3.36973 17.0115C3.62473 17.324 3.97139 17.4998 4.33306 17.4998H16.6064C16.9681 17.4998 17.3139 17.3248 17.5697 17.0115Z" stroke="#232323" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M11.7201 14.1667C12.6041 14.1667 13.452 13.8155 14.0771 13.1904C14.7022 12.5652 15.0534 11.7174 15.0534 10.8333C15.0534 9.94928 14.7022 9.10143 14.0771 8.47631C13.452 7.85119 12.6041 7.5 11.7201 7.5C10.836 7.5 9.98815 7.85119 9.36303 8.47631C8.73791 9.10143 8.38672 9.94928 8.38672 10.8333C8.38672 11.7174 8.73791 12.5652 9.36303 13.1904C9.98815 13.8155 10.836 14.1667 11.7201 14.1667Z" stroke="#232323" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg> */}
+                            </svg>
                         </div>
                     </div>
                     <div className="send-btn-container cup">
@@ -165,9 +176,6 @@ const ChatPage = () => {
             </div>
 
 
-            
-
-
 
 
 
@@ -176,4 +184,4 @@ const ChatPage = () => {
     )
 }
 
-export default ChatPage
+export default ChatPage2
