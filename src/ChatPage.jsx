@@ -3,6 +3,7 @@ import Image from 'Utils/Image'
 import Img from 'Components/Img/Img'
 import HeaderCard from 'Components/Card/HeaderCard'
 import './Stylesheet/Css/ChatPage.css'
+import { Link } from 'react-router-dom'
 
 
 const ChatPage = () => {
@@ -33,11 +34,11 @@ const ChatPage = () => {
             />
 
             <div className="chat-container ">
-                <div className="back-icon cup">
+                <Link to="/" className="back-icon cup">
                     <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44" fill="none">
                         <path d="M29.0711 21.9992L14.9289 21.9992M14.9289 21.9992L20.2322 27.3025M14.9289 21.9992L20.2322 16.6959" stroke="#005C75" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
-                </div>
+                </Link>
 
                 {/* Sending-Receiving messages-container */}
                 <div className='sending-receiving-message-container'>
