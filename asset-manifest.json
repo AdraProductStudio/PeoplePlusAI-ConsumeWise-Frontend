@@ -1,20 +1,21 @@
 {
   "files": {
-    "main.css": "/consumewise/static/css/main.4a446d8d.css",
-    "main.js": "/consumewise/static/js/main.ded80f79.js",
+    "main.css": "/consumewise/static/css/main.47e8f899.css",
+    "main.js": "/consumewise/static/js/main.01195903.js",
     "static/media/BespokeStencil-Variable.ttf": "/consumewise/static/media/BespokeStencil-Variable.3d2f7618150ba677d10b.ttf",
     "static/media/Done-rafiki 1.png": "/consumewise/static/media/Done-rafiki 1.c73f5fdb88ee214f204d.png",
     "static/media/Completed steps-amico 1.png": "/consumewise/static/media/Completed steps-amico 1.5f541766f2ebe9e5378f.png",
     "static/media/Task_empty.png": "/consumewise/static/media/Task_empty.6f58db6dc29ceaf7ba99.png",
     "static/media/Segoe UI.woff": "/consumewise/static/media/Segoe UI.293e692f583af77a347b.woff",
     "static/media/consumer-wise.png": "/consumewise/static/media/consumer-wise.94cbaaeab97ad69fcc23.png",
+    "static/media/horlicks.png": "/consumewise/static/media/horlicks.330014f1c9538335456e.png",
     "static/media/Group 1261156335.png": "/consumewise/static/media/Group 1261156335.339a5116f35ad3f5f94b.png",
     "index.html": "/consumewise/index.html",
-    "main.4a446d8d.css.map": "/consumewise/static/css/main.4a446d8d.css.map",
-    "main.ded80f79.js.map": "/consumewise/static/js/main.ded80f79.js.map"
+    "main.47e8f899.css.map": "/consumewise/static/css/main.47e8f899.css.map",
+    "main.01195903.js.map": "/consumewise/static/js/main.01195903.js.map"
   },
   "entrypoints": [
-    "static/css/main.4a446d8d.css",
-    "static/js/main.ded80f79.js"
+    "static/css/main.47e8f899.css",
+    "static/js/main.01195903.js"
   ]
 }
