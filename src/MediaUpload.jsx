@@ -58,7 +58,7 @@ const MediaUpload = () => {
 
                 <div className=''>
                     <div className='media-upload-container'>
-                        <div >
+                        <div>
                             <div>
                                 <h5 className='mb-0 media-upload-text'>Media Upload</h5>
                                 <p className='mb-0 media-upload-sub-text'>Add your documents here, and you can upload up to 25mb files max</p>
@@ -123,18 +123,7 @@ const MediaUpload = () => {
                         </div>
                     }
                 </div>
-
-
-
-
-
-
             </div>
-
-
-
-
-
         </section>
 
     )

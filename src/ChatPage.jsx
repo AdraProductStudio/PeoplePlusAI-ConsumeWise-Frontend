@@ -1,13 +1,235 @@
-import React from 'react'
+import React, { useState } from 'react'
 import HeaderCard from 'Components/Card/HeaderCard'
 import './Stylesheet/Css/ChatPage.css'
 import { Link } from 'react-router-dom'
 import Image from 'Utils/Image'
 import Img from 'Components/Img/Img'
-
-
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import ButtonComponent from 'Components/Button/Button'
+import MediaUpload from 'MediaUpload'
+import axiosInstance from 'Services/axiosInstance'
 
 const ChatPage = () => {
+
+    const [show, setShow] = useState(false);
+    const [isFileSelected, setIsFileSelected] = useState(false)
+    const [selectedFileName, setSelectedFileName] = useState("")
+    const [selectedFileURL, setSelectedFileURL] = useState("")
+    const [progressPercentage, setProgressPercentage] = useState(null);
+    const [messages, setMessages] = useState([])
+    const [userInputMessage, setUserInputMessage] = useState("");
+
+
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+
+    const handleFileUploadChange = async (e) => {
+
+        try {
+
+            let file = e.target.files[0];
+            if (
+                file.name.includes(".png") ||
+                file.name.includes(".jpeg") ||
+                file.name.includes(".jpg") ||
+                file.name.includes(".PNG") ||
+                file.name.includes(".JPEG") ||
+                file.name.includes(".JPG") ||
+                file.name.includes(".HEIC")
+            ) {
+                setIsFileSelected(true)
+                setSelectedFileName(file.name)
+                const url = URL.createObjectURL(file)
+                setSelectedFileURL(url)
+
+                // setFileUploadLoading(true);
+                const formData = new FormData();
+                formData.append("file", file);
+                const config = {
+                    onUploadProgress: function (progressEvent) {
+                        const percentCompleted = Math.round(
+                            (progressEvent.loaded * 99) / progressEvent.total
+                        );
+                        setProgressPercentage(percentCompleted);
+                    },
+                };
+                const response = await axiosInstance.post("/upload_image", formData, config)
+
+                if (response.data.status_code === 201) {
+
+                    const userMessage = { text: e.target.files[0].name,url:URL.createObjectURL(file), user: true, time: currentTime(new Date()) }
+
+                    setMessages((prevMessages) => [...prevMessages, userMessage])
+                    const loadingText = { text: "Loading...", user: false, time: currentTime(new Date()) }
+                    setMessages((prevMessages) => [...prevMessages, loadingText])
+
+                    const responseMessage = response.data.data.response;
+                    const formattedHTML = responseMessage
+                        .split("\n\n")
+                        .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`)
+                        .join("");
+
+                    const botMessage = { text: formattedHTML, user: false, time: currentTime(new Date()) };
+                    setMessages((prevMessages) => [
+                        ...prevMessages.slice(0, -1),
+                        botMessage,
+                    ]);
+
+                    setIsFileSelected(false)
+                    handleClose()
+
+                    setTimeout(() => {
+                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                    }, 1);
+                } else {
+
+                    const responseMessage = response.data.message;
+                    const botMessage = { text: responseMessage, user: false, time: currentTime(new Date()) };
+                    setMessages((prevMessages) => [
+                        ...prevMessages.slice(0, -1),
+                        botMessage,
+                    ]);
+                
+
+                    setIsFileSelected(false)
+                    handleClose()
+
+                    setTimeout(() => {
+                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                    }, 1);
+                }
+            } else {
+                console.log("Unsupported file format. Please upload PDF files only.");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+
+
+
+    }
+
+    const handleFileUploadClick = (e) => {
+        document.getElementById("upload-file").click()
+    }
+
+    const handleSendMessage = async (text, value) => {
+
+        if (!text.trim()) return
+
+        if (text !== "") {
+            try {
+                let payload;
+                if (value === "suggestionResponseText") {
+                    setSelectedFileName("")
+                    setSelectedFileURL("")
+                    payload = {
+                        "message": text,
+                        "flag": "True"
+                    }
+                    const userMessage = { text: text, user: true, time: currentTime(new Date()) }
+                    setMessages((prevMessages) => [...prevMessages, userMessage])
+                    setUserInputMessage("")
+
+                    const loadingText = { text: "Loading...", user: false, time: currentTime(new Date()) }
+                    setMessages((prevMessages) => [...prevMessages, loadingText])
+
+                    setTimeout(() => {
+                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                    }, 1);
+
+                } else {
+                    payload = {
+                        "message": text,
+                        "flag": "False"
+                    }
+                    setSelectedFileName("")
+                    setSelectedFileURL("")
+
+                    const userMessage = { text: text, user: true, time: currentTime(new Date()) }
+                    setMessages((prevMessages) => [...prevMessages, userMessage])
+                    setUserInputMessage("")
+
+                    const loadingText = { text: "Loading...", user: false, time: currentTime(new Date()) }
+                    setMessages((prevMessages) => [...prevMessages, loadingText])
+
+                    setTimeout(() => {
+                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                    }, 1);
+
+                }
+
+                const response = await axiosInstance.post("/chat", payload);
+
+                if (response.data.status_code === 200) {
+                    const responseArray = response.data.data.response;
+                    const botMessage = { text: responseArray, user: false, time: currentTime(new Date()) };
+                    setMessages((prevMessages) => [
+                        ...prevMessages.slice(0, -1),
+                        botMessage,
+                    ]);
+
+                    setTimeout(() => {
+                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                    }, 1);
+
+                } else if (response.data.status_code === 201) {
+                    const responseMessage = response.data.data.response;
+                    const formattedHTML = responseMessage
+                        .split("\n\n") // Split by double newline to create paragraphs
+                        .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`) // Replace single \n with <br>
+                        .join(""); // Join paragraphs together
+
+                    const botMessage = { text: formattedHTML, user: false, time: currentTime(new Date()) };
+                    setMessages((prevMessages) => [
+                        ...prevMessages.slice(0, -1),
+                        botMessage,
+                    ]);
+                    setTimeout(() => {
+                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                    }, 1);
+                } else {
+                    const responseMessage = response.data.message;
+                    const botMessage = { text: responseMessage, user: false, time: currentTime(new Date()) };
+                    setMessages((prevMessages) => [
+                        ...prevMessages.slice(0, -1),
+                        botMessage,
+                    ]);
+                    setTimeout(() => {
+                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                    }, 1);
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+    }
+
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault()
+            handleSendMessage(userInputMessage, "userInputMessage")
+        }
+    }
+
+
+    const currentTime = (date) => {
+        let hours = date.getHours()
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        hours = hours < 10 ? `0${hours}` : hours
+        let minutes = date.getMinutes()
+        minutes = minutes < 10 ? `0${minutes}` : minutes
+        const time = `${hours}:${minutes} ${ampm}`
+        return time
+    }
+
+
+
     return (
         <section className='chatpage-component'>
 
@@ -43,65 +265,80 @@ const ChatPage = () => {
 
                 {/* Sending-Receiving messages-container */}
                 <div className='sending-receiving-message-container'>
-                    <div className="sending-message-container">
-                        <p className="mb-0 sending-message">Horlicks</p>
-                        {/* <Img
-                            className=""
-                            src={Image.horlicksImg}
-                            alt="peoplePlusAI-logo"
-                        /> */}
-                        <p className="mb-0 sending-message-time">09.30AM</p>
-                    </div>
-                    <div className="receiving-message-container">
-                        <div className="mb-0 receiving-message">
-                            <p className='recommendation-text'>Recommendation</p>
-                            <p className='mb-4'>Horlicks is a nutritional drink that provides essential vitamins and minerals to support overall health and well-being. It is designed to boost energy, strengthen the immune system, and promote growth and development.</p>
-                            {/* <hr className='horizontal-line' /> */}
-                            <div className='mb-0 d-flex gap-4 align-items-center'>
-                                {/* <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
-                                    <path d="M2.43172 14.1841V6.06954H0.113281V14.1841H2.43172Z" fill="#8692A6" />
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M5.90938 4.02475L4.75016 6.34319V13.0249H10.989L12.8647 9.27354V6.64914C12.8647 6.32903 12.6052 6.06954 12.2851 6.06954H7.0686V2.01227C7.0686 1.69216 6.8091 1.43266 6.48899 1.43266H5.90938V4.02475ZM4.75016 0.273438H6.48899C7.44932 0.273438 8.22782 1.05194 8.22782 2.01227V4.91032H12.2851C13.2454 4.91032 14.0239 5.68882 14.0239 6.64914V9.54719L11.7055 14.1841H3.59094V6.06954L4.75016 3.7511V0.273438Z" fill="#8692A6" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
-                                    <path d="M12.4359 0.273438V8.38797H14.7544V0.273438H12.4359Z" fill="#8692A6" />
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.95829 10.4328L10.1175 8.11432V1.43266H3.87863L2.00297 5.18397V7.80836C2.00297 8.12847 2.26247 8.38797 2.58258 8.38797H7.79907V12.4452C7.79907 12.7654 8.05857 13.0249 8.37868 13.0249H8.95829V10.4328ZM10.1175 14.1841H8.37868C7.41835 14.1841 6.63985 13.4056 6.63985 12.4452V9.54719H2.58258C1.62225 9.54719 0.84375 8.76869 0.84375 7.80836V4.91032L3.16219 0.273438H11.2767V8.38797L10.1175 10.7064V14.1841Z" fill="#8692A6" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
-                                    <path d="M10.8281 0.273438H2.0424C1.23339 0.273438 0.578125 0.839347 0.578125 1.53804V10.3903H2.0424V1.53804H10.8281V0.273438ZM13.0245 2.80264H4.97096C4.16194 2.80264 3.50668 3.36855 3.50668 4.06725V12.9195C3.50668 13.6182 4.16194 14.1841 4.97096 14.1841H13.0245C13.8335 14.1841 14.4888 13.6182 14.4888 12.9195V4.06725C14.4888 3.36855 13.8335 2.80264 13.0245 2.80264ZM13.0245 12.9195H4.97096V4.06725H13.0245V12.9195Z" fill="#8692A6" />
-                                </svg> */}
-                                {/* <svg xmlns="http://www.w3.org/2000/svg" width="14" height="15" viewBox="0 0 14 15" fill="none">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.73786 5.14216H11.978C12.1498 5.14216 12.3147 5.06888 12.4362 4.93844C12.5577 4.80801 12.626 4.63109 12.626 4.44663V0.968969C12.626 0.784503 12.5577 0.607591 12.4362 0.477154C12.3147 0.346716 12.1498 0.273438 11.978 0.273438C11.8061 0.273438 11.6413 0.346716 11.5197 0.477154C11.3982 0.607591 11.3299 0.784503 11.3299 0.968969V2.26695C11.0058 1.92524 10.6478 1.61963 10.261 1.35615C9.28947 0.694411 8.1713 0.322252 7.02139 0.277921C5.87149 0.23359 4.73132 0.518685 3.71807 1.10391C2.70481 1.68914 1.855 2.55338 1.25598 3.60784C0.656959 4.66229 0.330323 5.86893 0.309641 7.10374C0.288959 8.33855 0.574976 9.557 1.1383 10.6339C1.70162 11.7108 2.52194 12.6072 3.51494 13.2312C4.50795 13.8551 5.63783 14.184 6.78848 14.1841C8.50713 14.1841 10.1554 13.4513 11.3707 12.1469C12.5859 10.8425 13.2687 9.07342 13.2687 7.22875C13.2687 7.04429 13.2004 6.86738 13.0789 6.73694C12.9573 6.6065 12.7925 6.53322 12.6206 6.53322C12.4488 6.53322 12.284 6.6065 12.1624 6.73694C12.0409 6.86738 11.9726 7.04429 11.9726 7.22875C11.9738 8.59026 11.5098 9.90496 10.6685 10.924C9.82722 11.943 8.66705 12.5955 7.40762 12.7582C6.1482 12.9208 4.87694 12.5821 3.83451 11.8063C2.79209 11.0305 2.05085 9.87142 1.75112 8.54847C1.45139 7.22551 1.61399 5.83052 2.20812 4.62759C2.80225 3.42465 3.78668 2.49727 4.97504 2.02101C6.1634 1.54474 7.47321 1.55266 8.65649 2.04325C9.5148 2.39911 10.2633 2.99101 10.8317 3.7511H8.73786C8.566 3.7511 8.40117 3.82438 8.27964 3.95481C8.15812 4.08525 8.08984 4.26216 8.08984 4.44663C8.08984 4.63109 8.15812 4.80801 8.27964 4.93844C8.40117 5.06888 8.566 5.14216 8.73786 5.14216Z" fill="#8692A6" />
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                    <g clip-path="url(#clip0_238_5704)">
-                                        <path d="M11.7463 14C11.5305 13.9994 11.317 13.9561 11.118 13.8725C10.9191 13.7888 10.7387 13.6667 10.5872 13.5129L6.99975 9.94642L3.41225 13.5153C3.18185 13.749 2.88637 13.9079 2.56432 13.9713C2.24228 14.0347 1.90862 13.9995 1.60683 13.8705C1.30205 13.7479 1.04131 13.5363 0.85868 13.2632C0.676046 12.9901 0.579998 12.6683 0.58308 12.3398V2.91667C0.58308 2.14312 0.890371 1.40125 1.43735 0.854272C1.98433 0.307291 2.7262 0 3.49975 0L10.4997 0C10.8828 0 11.262 0.0754418 11.6159 0.222018C11.9698 0.368594 12.2913 0.583434 12.5621 0.854272C12.833 1.12511 13.0478 1.44664 13.1944 1.80051C13.341 2.15437 13.4164 2.53364 13.4164 2.91667V12.3398C13.4197 12.6681 13.324 12.9897 13.1418 13.2627C12.9596 13.5357 12.6993 13.7475 12.395 13.8705C12.1896 13.9564 11.969 14.0005 11.7463 14ZM3.49975 1.16667C3.03562 1.16667 2.5905 1.35104 2.26231 1.67923C1.93412 2.00742 1.74975 2.45254 1.74975 2.91667V12.3398C1.74954 12.437 1.77814 12.5321 1.83194 12.6131C1.88574 12.694 1.96233 12.7572 2.05202 12.7947C2.14172 12.8321 2.24051 12.8422 2.3359 12.8235C2.4313 12.8048 2.51902 12.7583 2.588 12.6898L6.59141 8.71092C6.70071 8.60227 6.84856 8.54129 7.00266 8.54129C7.15677 8.54129 7.30462 8.60227 7.41391 8.71092L11.4127 12.6887C11.4816 12.7572 11.5694 12.8037 11.6648 12.8223C11.7602 12.841 11.8589 12.831 11.9486 12.7935C12.0383 12.7561 12.1149 12.6929 12.1687 12.6119C12.2225 12.531 12.2511 12.4359 12.2509 12.3387V2.91667C12.2509 2.45254 12.0665 2.00742 11.7384 1.67923C11.4102 1.35104 10.965 1.16667 10.5009 1.16667H3.49975Z" fill="#8692A6" />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_238_5704">
-                                            <rect width="14" height="14" fill="white" />
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <g clip-path="url(#clip0_238_5705)">
-                                        <path d="M12.8888 9.77816C12.3847 9.77858 11.8883 9.90163 11.4425 10.1367C10.9966 10.3718 10.6146 10.7118 10.3295 11.1275L5.99012 9.16817C6.29833 8.42392 6.29952 7.58796 5.99345 6.84283L10.3268 4.8735C10.7494 5.48467 11.377 5.92414 12.0958 6.1122C12.8147 6.30025 13.5771 6.22443 14.2449 5.8985C14.9126 5.57256 15.4414 5.0181 15.7353 4.33568C16.0293 3.65325 16.0689 2.88808 15.847 2.17895C15.6251 1.46982 15.1564 0.863696 14.5259 0.470535C13.8954 0.0773743 13.1449 -0.0767867 12.4105 0.0360157C11.6761 0.148818 11.0064 0.521112 10.5229 1.08537C10.0395 1.64962 9.7743 2.36846 9.77545 3.1115C9.77828 3.28736 9.79612 3.46267 9.82878 3.6355L5.22212 5.72883C4.77968 5.31431 4.22579 5.03806 3.6285 4.93401C3.03121 4.82996 2.41654 4.90264 1.85999 5.14314C1.30344 5.38363 0.829268 5.78146 0.495715 6.28774C0.162163 6.79402 -0.0162385 7.38671 -0.0175706 7.993C-0.0189027 8.59928 0.156892 9.19275 0.488217 9.70049C0.819542 10.2082 1.29197 10.6081 1.84745 10.8511C2.40293 11.094 3.01728 11.1694 3.61502 11.068C4.21276 10.9666 4.76786 10.6927 5.21212 10.2802L9.83078 12.3655C9.7987 12.5382 9.78109 12.7132 9.77812 12.8888C9.77799 13.5043 9.96037 14.1059 10.3022 14.6176C10.644 15.1294 11.1299 15.5283 11.6985 15.7639C12.267 15.9994 12.8927 16.0611 13.4963 15.9411C14.0999 15.8211 14.6543 15.5247 15.0895 15.0895C15.5247 14.6544 15.821 14.0999 15.941 13.4963C16.0611 12.8927 15.9994 12.2671 15.7638 11.6985C15.5282 11.13 15.1294 10.6441 14.6176 10.3022C14.1058 9.96041 13.5042 9.77803 12.8888 9.77816ZM12.8888 1.3335C13.2405 1.33337 13.5843 1.43753 13.8768 1.63282C14.1692 1.82811 14.3972 2.10575 14.5319 2.43063C14.6666 2.7555 14.7019 3.11302 14.6334 3.45796C14.5648 3.8029 14.3956 4.11977 14.1469 4.3685C13.8983 4.61722 13.5815 4.78663 13.2366 4.85529C12.8917 4.92394 12.5341 4.88877 12.2092 4.75422C11.8843 4.61967 11.6065 4.39178 11.4111 4.09937C11.2157 3.80697 11.1115 3.46318 11.1115 3.1115C11.1118 2.64017 11.2992 2.18823 11.6324 1.85489C11.9656 1.52154 12.4175 1.33403 12.8888 1.3335ZM3.11145 9.77816C2.75977 9.7783 2.41594 9.67413 2.12347 9.47884C1.83099 9.28355 1.60299 9.00591 1.46832 8.68104C1.33364 8.35616 1.29834 7.99865 1.36687 7.6537C1.4354 7.30876 1.60468 6.99189 1.85331 6.74317C2.10194 6.49444 2.41875 6.32504 2.76367 6.25638C3.10859 6.18772 3.46612 6.22289 3.79104 6.35744C4.11597 6.492 4.39369 6.71989 4.58909 7.01229C4.78449 7.3047 4.88878 7.64848 4.88878 8.00016C4.88826 8.47144 4.70085 8.92327 4.36767 9.25658C4.03449 9.58989 3.58273 9.77746 3.11145 9.77816ZM12.8888 14.6668C12.5371 14.6668 12.1934 14.5626 11.901 14.3672C11.6086 14.1718 11.3807 13.8941 11.2461 13.5692C11.1116 13.2444 11.0763 12.8869 11.1449 12.542C11.2136 12.1971 11.3829 11.8803 11.6315 11.6316C11.8802 11.3829 12.197 11.2136 12.5419 11.145C12.8868 11.0764 13.2443 11.1116 13.5692 11.2462C13.8941 11.3807 14.1718 11.6086 14.3671 11.901C14.5625 12.1934 14.6668 12.5372 14.6668 12.8888C14.6664 13.3603 14.479 13.8123 14.1456 14.1457C13.8123 14.479 13.3602 14.6665 12.8888 14.6668Z" fill="#8692A6" />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_238_5705">
-                                            <rect width="16" height="16" fill="white" />
-                                        </clipPath>
-                                    </defs>
-                                </svg> */}
-                            </div>
+                    {
+                        messages.length === 0 &&
+                        <div className='d-flex justify-content-center align-items-center gap-2 h-100 start-searching-text'>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26" fill="none">
+                                <path d="M12.0212 21.1616C17.1028 21.1616 21.2222 17.0422 21.2222 11.9607C21.2222 6.87916 17.1028 2.75977 12.0212 2.75977C6.9397 2.75977 2.82031 6.87916 2.82031 11.9607C2.82031 17.0422 6.9397 21.1616 12.0212 21.1616Z" stroke="#969696" stroke-width="1.75256" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M20.1289 21.8676C20.6708 23.5033 21.9078 23.6669 22.8585 22.2356C23.7275 20.927 23.155 19.8536 21.5806 19.8536C20.4152 19.8434 19.7609 20.7532 20.1289 21.8676Z" stroke="#969696" stroke-width="1.75256" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span>Start searching here..</span>
                         </div>
-                        <div className='default-receiving-suggestions-container'>
-                            <p className='mb-0 default-receiving-suggestion'>Nutrition analysis</p>
-                            <p className='mb-0 default-receiving-suggestion'>Ingredient Analysis</p>
-                            <p className='mb-0 default-receiving-suggestion'>Misleading Claims</p>
-                        </div>
-
-                        <p className="mb-0 receiving-message-time">09.30AM</p>
-                    </div>
+                    }
+                    {
+                        messages?.map((message, index) => {
+                            return (
+                                <React.Fragment key={index}>
+                                {message?.user === true ? (
+                                  <>
+                                    <div className="sending-message-container">
+                                      <div className="mb-0 sending-message">
+                                        {message.url ? (
+                                          <img
+                                            src={message.url}
+                                            alt="selected-media-file"
+                                            width="150"
+                                            height="150"
+                                          />
+                                        ) : (
+                                          message.text
+                                        )}
+                                      </div>
+                                      <p className="mb-0 sending-message-time">{message?.time}</p>
+                                    </div>
+                                  </>
+                                ) : (
+                                  <div className="receiving-message-container" key={index}>
+                                    <div className="default-receiving-suggestions-container" key={index}>
+                                      {Array.isArray(message.text) ? (
+                                        message.text.map((item, idx) => (
+                                          <p
+                                            key={idx}
+                                            className="mb-0 cup default-receiving-suggestion"
+                                            onClick={() => handleSendMessage(item, "suggestionResponseText")}
+                                          >
+                                            {item}
+                                          </p>
+                                        ))
+                                      ) : (
+                                        <>
+                                          <div className="mb-0 receiving-message">
+                                            {message.url ? (
+                                              <img
+                                                src={message.url}
+                                                alt="received-media-file"
+                                                width="150"
+                                                height="150"
+                                              />
+                                            ) : (
+                                              <p
+                                                className="mb-0 recommendation-text"
+                                                dangerouslySetInnerHTML={{ __html: message.text }}
+                                              />
+                                            )}
+                                          </div>
+                                        </>
+                                      )}
+                                    </div>
+                                    <p className="mb-0 receiving-message-time">{message?.time}</p>
+                                  </div>
+                                )}
+                              </React.Fragment>
+                              
+                            )
+                        })
+                    }
+                    <div id="scrollView"></div>
                 </div>
 
 
@@ -109,7 +346,14 @@ const ChatPage = () => {
                 <div className="chat-textarea-section position-absolute d-flex align-items-center ">
                     <div className='chat-textarea-container d-flex align-items-center '>
                         <div className='position-relative w-100 me-4 d-flex align-items-center'>
-                            <textarea className='chat-textarea-field ' type="text" placeholder='Type here..' />
+                            <textarea
+                                className='chat-textarea-field '
+                                type="text"
+                                placeholder='Type here..'
+                                value={userInputMessage}
+                                onChange={(e) => setUserInputMessage(e.target.value)}
+                                onKeyDown={handleKeyDown}
+                            />
                             <svg className='position-absolute record-icon cup' xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
                                 <path d="M10.5479 15.8337C13.3062 15.8337 15.5479 13.592 15.5479 10.8337V6.66699C15.5479 3.90866 13.3062 1.66699 10.5479 1.66699C7.78952 1.66699 5.54785 3.90866 5.54785 6.66699V10.8337C5.54785 13.592 7.78952 15.8337 10.5479 15.8337Z" stroke="#232323" stroke-linecap="round" stroke-linejoin="round" />
                                 <path d="M3.04785 9.16699V10.8337C3.04785 14.9753 6.40618 18.3337 10.5479 18.3337C14.6895 18.3337 18.0479 14.9753 18.0479 10.8337V9.16699" stroke="#232323" stroke-linecap="round" stroke-linejoin="round" />
@@ -118,7 +362,7 @@ const ChatPage = () => {
                             </svg>
                         </div>
                         <div className='d-flex align-items-center'>
-                            <svg className="cup" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <svg onClick={handleShow} className="cup" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <mask id="mask0_230_1393" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
                                     <rect x="0.0957031" y="0.408203" width="23.1844" height="23.1844" fill="#D9D9D9" />
                                 </mask>
@@ -148,7 +392,7 @@ const ChatPage = () => {
                             </svg> */}
                         </div>
                     </div>
-                    <div className="send-btn-container cup">
+                    <div className="send-btn-container cup" onClick={() => handleSendMessage(userInputMessage, "userInputMessage")}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                             <g clip-path="url(#clip0_230_1404)">
                                 <path d="M17.3392 0.661053C17.0703 0.388898 16.7358 0.190694 16.3679 0.08559C16 -0.0195141 15.6113 -0.0279654 15.2392 0.0610527L3.2392 2.58855C2.54813 2.68333 1.89725 2.96916 1.35985 3.41386C0.82245 3.85856 0.419881 4.44447 0.197478 5.1056C-0.0249258 5.76673 -0.0583304 6.47683 0.101026 7.15592C0.260382 7.835 0.606169 8.45612 1.09945 8.9493L2.38795 10.2371C2.45768 10.3068 2.51299 10.3896 2.5507 10.4807C2.5884 10.5718 2.60777 10.6694 2.6077 10.7681V13.1441C2.60935 13.4781 2.68626 13.8075 2.8327 14.1078L2.8267 14.1131L2.8462 14.1326C3.06596 14.5744 3.42488 14.9317 3.8677 15.1496L3.8872 15.1691L3.89245 15.1631C4.19272 15.3095 4.52212 15.3864 4.8562 15.3881H7.2322C7.43098 15.3879 7.62171 15.4667 7.76245 15.6071L9.0502 16.8948C9.39559 17.244 9.80668 17.5214 10.2598 17.711C10.7129 17.9006 11.199 17.9987 11.6902 17.9996C12.0995 17.999 12.506 17.9322 12.8939 17.8016C13.549 17.5864 14.131 17.1926 14.5741 16.6643C15.0173 16.1361 15.304 15.4946 15.4019 14.8121L17.9332 2.7858C18.0268 2.41053 18.0213 2.01737 17.9172 1.64488C17.813 1.27238 17.6139 0.933355 17.3392 0.661053ZM3.44995 9.17805L2.1607 7.8903C1.86049 7.59732 1.65008 7.22479 1.55416 6.81642C1.45825 6.40805 1.48081 5.9808 1.6192 5.5848C1.75337 5.17855 2.0014 4.81937 2.33379 4.55C2.66619 4.28063 3.06896 4.11239 3.4942 4.0653L15.3749 1.56405L4.1062 12.8343V10.7681C4.10733 10.4728 4.04992 10.1803 3.93728 9.90734C3.82463 9.63443 3.659 9.38655 3.44995 9.17805ZM13.9282 14.5556C13.8706 14.9698 13.6987 15.3598 13.4318 15.6818C13.1648 16.0038 12.8134 16.245 12.417 16.3783C12.0206 16.5117 11.5949 16.5319 11.1876 16.4367C10.7804 16.3416 10.4077 16.1348 10.1114 15.8396L8.82145 14.5496C8.61322 14.3402 8.36555 14.1742 8.09276 14.0612C7.81997 13.9481 7.52748 13.8903 7.2322 13.8911H5.16595L16.4362 2.62455L13.9282 14.5556Z" fill="white" />
@@ -165,8 +409,89 @@ const ChatPage = () => {
             </div>
 
 
-            
 
+            <Modal
+                className='chatpage-component-modal'
+                show={show}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+                centered
+                size='lg'
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>Upload Media</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className='px-5 py-4'>
+                    <div className='media-upload-container p-5'>
+                        <div>
+
+                            <div className={`drop-file-container text-center cup p-3 ${isFileSelected && 'pe-none opacity-50'}`} onClick={handleFileUploadClick}>
+
+                                <input type="file" hidden id='upload-file' onChange={handleFileUploadChange} />
+
+                                {isFileSelected && <p className='selected-media-file'><b>File name</b> : {selectedFileName}</p>}
+
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="49" height="49" viewBox="0 0 49 49" fill="none">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M14.4405 6.72852L14.3348 6.74216L12.7321 6.94676L10.7849 7.19228C9.59847 7.33123 8.49724 7.87836 7.66983 8.73998C6.84243 9.6016 6.34034 10.7241 6.24956 11.9152C5.54214 21.7678 5.54214 31.6585 6.24956 41.5111C6.33318 42.711 6.84319 43.8415 7.68746 44.6982C8.53172 45.555 9.65456 46.0816 10.8531 46.1828C19.9784 46.9467 28.3331 46.9467 37.455 46.1828C38.6535 46.0816 39.7764 45.555 40.6206 44.6982C41.4649 43.8415 41.9749 42.711 42.0585 41.5111C42.7658 31.6585 42.7658 21.7678 42.0585 11.9152C41.9679 10.7246 41.4663 9.60253 40.6396 8.74098C39.8128 7.87942 38.7124 7.33196 37.5266 7.19228L35.5828 6.94676L33.9801 6.74216L33.871 6.72852H14.4405Z" fill="#E7F1F3" />
+                                        <path d="M15.6348 7.37585C15.6339 6.78835 15.7489 6.20644 15.9732 5.66345C16.1975 5.12046 16.5267 4.62705 16.942 4.21146C17.3572 3.79588 17.8504 3.46629 18.3932 3.24157C18.936 3.01685 19.5178 2.90141 20.1053 2.90186H28.2076C29.3947 2.90186 30.5331 3.3734 31.3724 4.21276C32.2118 5.05211 32.6833 6.19052 32.6833 7.37755C32.6833 8.56458 32.2118 9.70299 31.3724 10.5423C30.5331 11.3817 29.3947 11.8532 28.2076 11.8532H20.1087C19.5206 11.8537 18.9382 11.7382 18.3948 11.5133C17.8514 11.2885 17.3576 10.9587 16.9417 10.5428C16.5259 10.127 16.1961 9.63323 15.9713 9.0898C15.7464 8.54638 15.6343 7.96395 15.6348 7.37585Z" fill="#005C75" />
+                                    </svg>
+                                </div>
+                                <p className='mb-0 drop-file-text'>Drop file or Browse</p>
+                                <p className='mb-0 drop-file-sub-text'>Format: pdf, docx, doc & Max file size: 25 MB</p>
+                            </div>
+
+                            <div className={`browse-file-container ${isFileSelected && 'pe-none opacity-50'}`}>
+                                <ButtonComponent
+                                    buttonName={
+                                        <div className='d-flex align-items-center justify-content-center' onClick={handleFileUploadClick}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                                                <path d="M21.1185 15.1459V19.0179C21.1185 19.5314 20.9145 20.0238 20.5515 20.3869C20.1884 20.75 19.696 20.954 19.1825 20.954H5.63036C5.11689 20.954 4.62446 20.75 4.26138 20.3869C3.89831 20.0238 3.69434 19.5314 3.69434 19.0179V15.1459M17.2465 8.36984L12.4064 3.52979M12.4064 3.52979L7.56638 8.36984M12.4064 3.52979V15.1459" stroke="#005C75" stroke-width="1.74242" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                            <span className='browse-text '>Browse</span>
+                                        </div>}
+                                    className="btn browse-button mx-auto d-block"
+                                />
+                                <p className='mb-0 browse-file-sub-text'>Or Drop files in the drop zone above.</p>
+                            </div>
+                        </div>
+                    </div>
+                    {
+                        isFileSelected === true &&
+                        <div className='upload-progress-container mx-auto'>
+                            <div className='d-flex align-items-center' >
+                                <div className='upload-text-container' >
+                                    <p className='mb-2 uploading-text'>Uploading...</p>
+                                    <p className='mb-0 in-progress-text'>{progressPercentage}% • 30 seconds remaining</p>
+                                </div>
+                                <div className='d-flex justify-content-center align-items-center upload-icons-container gap-2'>
+                                    <svg className='cup' xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                        <path opacity="0.3" d="M15.9895 3.71387C9.18217 3.71387 3.64062 9.25541 3.64062 16.0627C3.64062 22.87 9.18217 28.4115 15.9895 28.4115C22.7968 28.4115 28.3383 22.87 28.3383 16.0627C28.3383 9.25541 22.7968 3.71387 15.9895 3.71387ZM14.4459 22.2371H11.3586V9.88829H14.4459V22.2371ZM20.6203 22.2371H17.5331V9.88829H20.6203V22.2371Z" fill="#6D6D6D" />
+                                        <path d="M20.6204 9.88867H17.5332V22.2375H20.6204V9.88867Z" fill="#6D6D6D" />
+                                        <path d="M14.4466 9.88867H11.3594V22.2375H14.4466V9.88867Z" fill="#6D6D6D" />
+                                        <path d="M15.9898 0.626953C7.46906 0.626953 0.553711 7.5423 0.553711 16.063C0.553711 24.5837 7.46906 31.499 15.9898 31.499C24.5105 31.499 31.4258 24.5837 31.4258 16.063C31.4258 7.5423 24.5105 0.626953 15.9898 0.626953ZM15.9898 28.4118C9.18246 28.4118 3.64092 22.8703 3.64092 16.063C3.64092 9.2557 9.18246 3.71416 15.9898 3.71416C22.7971 3.71416 28.3386 9.2557 28.3386 16.063C28.3386 22.8703 22.7971 28.4118 15.9898 28.4118Z" fill="#6D6D6D" />
+                                    </svg>
+                                    <svg className='cup' xmlns="http://www.w3.org/2000/svg" width="38" height="38" viewBox="0 0 38 38" fill="none">
+                                        <path opacity="0.3" d="M19.2102 6.71387C12.4029 6.71387 6.86133 12.2554 6.86133 19.0627C6.86133 25.87 12.4029 31.4115 19.2102 31.4115C26.0175 31.4115 31.559 25.87 31.559 19.0627C31.559 12.2554 26.0175 6.71387 19.2102 6.71387ZM25.3846 23.0606L23.2081 25.2371L19.2102 21.2392L15.2122 25.2371L13.0357 23.0606L17.0337 19.0627L13.0357 15.0648L15.2122 12.8883L19.2102 16.8862L23.2081 12.8883L25.3846 15.0648L21.3866 19.0627L25.3846 23.0606Z" fill="#FF3636" />
+                                        <path d="M23.2074 12.8876L19.2095 16.8855L15.2115 12.8876L13.0351 15.0641L17.033 19.062L13.0351 23.06L15.2115 25.2364L19.2095 21.2385L23.2074 25.2364L25.3839 23.06L21.386 19.062L25.3839 15.0641L23.2074 12.8876ZM19.2095 3.62598C10.6733 3.62598 3.77344 10.5259 3.77344 19.062C3.77344 27.5982 10.6733 34.4981 19.2095 34.4981C27.7456 34.4981 34.6455 27.5982 34.6455 19.062C34.6455 10.5259 27.7456 3.62598 19.2095 3.62598ZM19.2095 31.4109C12.4022 31.4109 6.86065 25.8693 6.86065 19.062C6.86065 12.2547 12.4022 6.71319 19.2095 6.71319C26.0168 6.71319 31.5583 12.2547 31.5583 19.062C31.5583 25.8693 26.0168 31.4109 19.2095 31.4109Z" fill="#FF3636" />
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div className="progress-bar-container">
+
+
+                                <div className="progress" role="progressbar" aria-label="Basic example" aria-valuenow={`${progressPercentage}`} aria-valuemin="0" aria-valuemax="100">
+                                    <div className="progress-bar w-75"></div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </Modal.Body>
+
+            </Modal>
 
 
 

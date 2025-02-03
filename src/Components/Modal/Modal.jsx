@@ -28,9 +28,9 @@ const ModalComponent = ({
   const dispatch = useDispatch();
   const { modalShow } = useSelector((state) => state.commonState);
 
-  return (
+  return ( 
 
-    <Modal
+    <Modal 
       show={modalShow}
       size={modalSize}
       backdrop={modalClickOutsideHide ? "" : "static"}

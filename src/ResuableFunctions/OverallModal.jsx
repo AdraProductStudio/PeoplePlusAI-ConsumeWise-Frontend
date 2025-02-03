@@ -20,7 +20,7 @@ export function OverallModel() {
         switch (commonState?.modal_from) {
             case "interview_candidate":
                 switch (commonState?.modal_type) {
-                    case "test_completed":
+                    case "test_completed":   
                         // return <h6 className='mb-0'>Test completed</h6>;
                         return
 
