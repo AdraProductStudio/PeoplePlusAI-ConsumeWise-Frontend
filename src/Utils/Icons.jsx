@@ -5,19 +5,19 @@ const closeTestIcon = <RiErrorWarningLine className="fs-1" />
 
 const interviewRoundNonActiveIcon = <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
     <circle cx="15" cy="15" r="15" fill="#303030" />
-    <path d="M10 12H16.1975" stroke="white" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M10 18H19.2354" stroke="white" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M10 12H16.1975" stroke="white" strokeWidth="1.2" stroke-miterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10 18H19.2354" stroke="white" strokeWidth="1.2" stroke-miterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
 const interviewRoundActiveIcon = <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
     <circle cx="15" cy="15" r="15" fill="#303030" />
-    <path d="M10 12H16.1975" stroke="white" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M10 18H19.2354" stroke="white" stroke-width="1.2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M10 12H16.1975" stroke="white" strokeWidth="1.2" stroke-miterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10 18H19.2354" stroke="white" strokeWidth="1.2" stroke-miterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
 const testSucccess = <svg xmlns="http://www.w3.org/2000/svg" width="124" height="123" viewBox="0 0 124 123" fill="none">
     <path d="M123.5 61.5C123.5 95.4655 95.9655 123 62 123C28.0345 123 0.5 95.4655 0.5 61.5C0.5 27.5345 28.0345 0 62 0C95.9655 0 123.5 27.5345 123.5 61.5ZM6.25046 61.5C6.25046 92.2896 31.2104 117.25 62 117.25C92.7896 117.25 117.75 92.2896 117.75 61.5C117.75 30.7104 92.7896 5.75046 62 5.75046C31.2104 5.75046 6.25046 30.7104 6.25046 61.5Z" fill="#00A91B" />
-    <path d="M91.5058 41.1926L53.3793 79.319L36.0491 61.9888" stroke="url(#paint0_linear_9_183)" stroke-width="7.10983" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M91.5058 41.1926L53.3793 79.319L36.0491 61.9888" stroke="url(#paint0_linear_9_183)" strokeWidth="7.10983" strokeLinecap="round" strokeLinejoin="round" />
     <defs>
         <linearGradient id="paint0_linear_9_183" x1="33.2052" y1="60.4335" x2="59.1561" y2="70.0318" gradientUnits="userSpaceOnUse">
             <stop stop-color="#00A91B" />
@@ -74,8 +74,8 @@ const doocumentIcon = <svg xmlns="http://www.w3.org/2000/svg" width="25" height=
 </svg>
 
 const profileDefautUserIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M20.59 22C20.59 18.13 16.74 15 12 15C7.26003 15 3.41003 18.13 3.41003 22" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M20.59 22C20.59 18.13 16.74 15 12 15C7.26003 15 3.41003 18.13 3.41003 22" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
 </svg>
 
 const notificationIcon = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

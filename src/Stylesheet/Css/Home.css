@@ -17,7 +17,8 @@
     margin-bottom: 2.4rem;
     color: #005C75;
     font-family: Poppins;
-    font-size: 2.625rem;
+    font-size: clamp(2rem,3vw,2.625rem);
+    /* font-size: 2.625rem; */
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -28,7 +29,7 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: 2.813rem;
+    font-size: clamp(2.2rem,3vw,2.813rem);
     font-style: normal;
     font-weight: bold;
     line-height: normal;
@@ -45,8 +46,8 @@
 
 .homepage-button {
     display: flex;
-    height: 3.998rem;
-    width: 25.741rem;
+    height: clamp(3rem, 10vw, 4rem);  /* Adjust height responsively */
+    width: clamp(12rem, 70vw, 25.741rem); /* Set responsive width with a min and max */
     padding: 0.548rem 2rem;
     justify-content: center;
     align-items: center;
@@ -56,16 +57,15 @@
     color: #FFF;
     text-align: center;
     font-family: "Segoe UI";
-    font-size: 1.5rem;
+    font-size: clamp(1.2rem, 2vw, 1.5rem); /* Adjust font-size responsively */
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
 
-.homepage-button:last-child{
+/* .homepage-button:last-child{
     width: 29.246rem;
-
-}
+} */
 
 .homepage-button:hover {
     background: #005c75d0;
@@ -74,12 +74,12 @@
 
 .disclaimer-container {
     width: 60%;
-    /* height: 13.375rem; */
     flex-shrink: 0;
     border-radius: 6px;
     background: #FFF;
     box-shadow: 0px 5.99px 37.44px 0px rgba(7, 5, 26, 0.07);
-    margin-top: 2.5rem;
+    margin-top: 8rem;
+    margin-bottom: 2rem;
     padding: 0.875rem 1.75rem;
 }
 

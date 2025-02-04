@@ -3,7 +3,6 @@
     display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 .sending-receiving-message-container {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -15,7 +14,7 @@
 
 .chatpage-component .chat-container {
     position: relative;
-    width: 70%;
+    width:  70vw;
     margin: 0 auto;
     height: 80vh;
     border-radius: 18px;
@@ -39,13 +38,8 @@
 
 .chatpage-component .sending-receiving-message-container {
     margin-top: 1.5rem;
-    height: 75%;
-    overflow-y: auto;
-    /* position: relative; */
-    /* display: flex;
-    flex-direction: column;
-    align-items: end;
-    justify-content: end; */
+    height: 75%; /* Ensure the height is set properly */
+    overflow-y: scroll;
 }
 
 .chatpage-component .sending-message-container {
@@ -54,9 +48,6 @@
     align-items: end;
     justify-content: end;
     margin-bottom: 2.563rem;
-    /* position: absolute;
-    right: 0;
-    bottom: 320px; */
 }
 
 .chatpage-component .sending-message {
@@ -86,15 +77,11 @@
     margin-top: 0.5rem;
 }
 
-
 .chatpage-component .receiving-message-container {
     display: flex;
     flex-direction: column;
     align-items: start;
     margin-bottom: 2.563rem;
-    /* position: absolute;
-    right: 0;
-    bottom: 0; */
 }
 
 .chatpage-component .receiving-message {
@@ -108,7 +95,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    width: 75%;
+    max-width: 75%;
     word-wrap: break-word;
 }
 
@@ -131,7 +118,6 @@
     gap: 1.159rem;
     margin: 0.5rem 0;
     flex-wrap: wrap;
-    
 }
 
 .chatpage-component .default-receiving-suggestion {
@@ -145,10 +131,8 @@
     font-style: normal;
     font-weight: 400;
     line-height: 18px;
-    /* height: auto; */
     min-height: 2.898rem;
     display: flex;
-
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -174,7 +158,6 @@
     bottom: 2.313rem;
     width: 100%;
     padding: 0 4.188rem;
-
 }
 
 .chatpage-component .chat-textarea-container {
@@ -182,7 +165,7 @@
     background: #B6D4DA;
     height: 4.125rem;
     width: 100%;
-    padding: 0 2.0rem;
+    padding: 0 1.5rem;
     padding-left: 1rem;
 }
 
@@ -222,26 +205,15 @@
     background: #005C75;
 }
 
-
-
 .chatpage-component-modal .media-upload-container {
-    /* margin-top: 7.924rem; */
-    /* position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); */
     border-radius: 13.939px;
     background: #FFF;
     box-shadow: 0px 5.99px 37.44px 0px rgba(7, 5, 26, 0.07);
-    /* width: 70%; */
     margin: 0 auto;
-    /* min-width: 743.432px; */
-    /* Restrict max width */
 }
 
 .chatpage-component-modal .modal-title {
     font-family: Inter !important;
-
 }
 
 .chatpage-component-modal .media-upload-container .media-upload-text {
@@ -268,6 +240,8 @@
     backdrop-filter: blur(25px);
 }
 
+
+/* Upload Modal */
 .chatpage-component-modal .media-upload-container .drop-file-container {
     margin-top: 2.323rem;
     border-radius: 8.882px 8.882px 0px 0px;
@@ -278,6 +252,9 @@
     max-width: 100%;
 }
 
+.chatpage-component-modal .media-upload-container .drop-file-container:hover {
+    background-color: #f4f4f4;
+}
 
 .chatpage-component-modal .media-upload-container .drop-file-container .drop-file-text {
     color: #181D27;
@@ -305,7 +282,6 @@
     font-family: Inter;
 }
 
-
 .chatpage-component-modal .media-upload-container .browse-file-container {
     margin-top: 1.806rem;
 }
@@ -316,6 +292,10 @@
     box-shadow: 0px 1.162px 2.323px 0px rgba(5, 32, 81, 0.05);
     padding: 0.726rem 1.162rem;
     width: 13.625rem;
+}
+
+.chatpage-component-modal .media-upload-container .browse-file-container .browse-button:hover {
+    background: #d3dfe2;
 }
 
 .chatpage-component-modal .media-upload-container .browse-file-container .browse-text {
@@ -371,10 +351,8 @@
 .chatpage-component-modal .progress-bar-container .progress {
     background-color: #FAFAFA;
     border-radius: 154.36px;
-
 }
 
 .chatpage-component-modal .progress-bar-container .progress-bar {
     background-color: #005C75;
-
 }
