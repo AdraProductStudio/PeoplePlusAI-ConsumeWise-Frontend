@@ -59,7 +59,6 @@ const ChatPage = () => {
 
             if (!file) return;
             if (file.size > MAX_FILE_SIZE) {
-                console.log("File size exceeds the limit of 25MB");
                 setSelectedFileErrorMsg("File size exceeds the limit of 25MB");
                 return;
             }
@@ -91,7 +90,7 @@ const ChatPage = () => {
                 };
                 const response = await axiosInstance.post("/upload_image", formData, config)
                 if (response.data.status_code === 201) {
-                    const userMessage = { text: e.target.files[0].name, url: URL.createObjectURL(file), user: true, time: currentTime(new Date()) }
+                    const userMessage = { text: file.name, url: URL.createObjectURL(file), user: true, time: currentTime(new Date()) }
                     setMessages((prevMessages) => [...prevMessages, userMessage])
                     const loadingText = { text: "Loading...", user: false, time: currentTime(new Date()) }
                     setMessages((prevMessages) => [...prevMessages, loadingText])
@@ -304,7 +303,7 @@ const ChatPage = () => {
                                                         <img
                                                             src={message.url}
                                                             alt="selected-media-file"
-                                                            width="150"
+                                                            width="100%"
                                                             height="150"
                                                         />
                                                     ) : (
@@ -442,9 +441,8 @@ const ChatPage = () => {
                             <p className='mb-0 drop-file-text'>
                                 {isDragActive ? "Drop the file here..." : "Drop file or Browse"}
                             </p>
-                            <p className='mb-0 drop-file-sub-text'>Format: pdf, docx, doc & Max file size: 25 MB</p>
+                            <p className='mb-0 drop-file-sub-text'>Formats : png, jpeg, jpg, PNG, JPEG, JPG, HEIC <br /> & Max file size : 25 MB</p>
                         </div>
-
                         <div className={`browse-file-container ${isFileSelected && 'pe-none opacity-50'}`}>
                             <ButtonComponent
                                 buttonName={
