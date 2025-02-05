@@ -17,7 +17,7 @@ const ChatPage = () => {
 
     const [show, setShow] = useState(false);
     const [isFileSelected, setIsFileSelected] = useState(false)
-    const [selectedFileName, setSelectedFileName] = useState("")
+    const [selectedFiles, setSelectedFiles] = useState("")
     const [selectedFileURL, setSelectedFileURL] = useState("")
     const [progressPercentage, setProgressPercentage] = useState(0);
     const [messages, setMessages] = useState([])
@@ -31,18 +31,17 @@ const ChatPage = () => {
     }, [])
 
     const onDrop = useCallback((acceptedFiles) => {
-        if (acceptedFiles.length > 0) {
+        if (acceptedFiles && acceptedFiles.length > 0) {
             setIsFileSelected(true);
-            handleFileUploadChange(acceptedFiles[0], "dragAndDrop")
+            handleFileUploadChange(acceptedFiles, "dragAndDrop");
+        } else {
+            setSelectedFileErrorMsg("No files selected.");
         }
     }, []);
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         onDrop,
-        accept: {
-            "image/*": [".png", ".jpg", ".jpeg", ".PNG", ".JPEG", ".JPG", ".HEIC"],
-        },
-        maxSize: 25 * 1024 * 1024,
+        multiple: true,
     });
 
     const handleClose = () => setShow(false);
@@ -54,92 +53,116 @@ const ChatPage = () => {
 
     const handleFileUploadChange = async (e, type) => {
         try {
-            let file = type === "fileUpload" ? e.target.files[0] : e;
-            const MAX_FILE_SIZE = 25 * 1024 * 1024;
-
-            if (!file) return;
-            if (file.size > MAX_FILE_SIZE) {
-                setSelectedFileErrorMsg("File size exceeds the limit of 25MB");
+            if (!navigator.onLine) {
+                setSelectedFileErrorMsg("No internet connection. Please check your network and try again");
                 return;
             }
 
-            if (
-                file.name.includes(".png") ||
-                file.name.includes(".jpeg") ||
-                file.name.includes(".jpg") ||
-                file.name.includes(".PNG") ||
-                file.name.includes(".JPEG") ||
-                file.name.includes(".JPG") ||
-                file.name.includes(".HEIC")
-            ) {
-                setSelectedFileErrorMsg("");
-                setIsFileSelected(true)
-                setSelectedFileName(file.name)
-                const url = URL.createObjectURL(file)
-                setSelectedFileURL(url)
+            let files = type === "fileUpload" ? Array.from(e.target.files) : Array.from(e);
+            const MAX_FILE_SIZE = 25 * 1024 * 1024;
+            const MAX_FILES = 5;
+            const validExtensions = [".png", ".jpg", ".jpeg", ".gif", ".webp", ".heic"];
 
-                const formData = new FormData();
+            if (!files.length) return;
+
+            files = files.slice(0, MAX_FILES);
+
+            let validFiles = [];
+            let errorMessages = [];
+
+            files.forEach(file => {
+                if (file.size > MAX_FILE_SIZE) {
+                    errorMessages.push(`${file.name} exceeds 25MB limit`);
+                    return;
+                }
+                if (!validExtensions.some(ext => file.name.toLowerCase().endsWith(ext))) {
+                    errorMessages.push(`${file.name} is not supported \n`);
+                    return;
+                }
+                validFiles.push(file);
+            });
+
+            if (errorMessages.length > 0) {
+                setSelectedFileErrorMsg(errorMessages.join("\n"));
+                return;
+            }
+
+            setSelectedFileErrorMsg("");
+            setSelectedFiles(Number(files.length))
+            setIsFileSelected(true);
+
+            const formData = new FormData();
+            let uploadedFiles = [];
+
+            validFiles.forEach(file => {
                 formData.append("file", file);
-                const config = {
-                    onUploadProgress: function (progressEvent) {
-                        const percentCompleted = Math.round(
-                            (progressEvent.loaded * 99) / progressEvent.total
-                        );
-                        setProgressPercentage(percentCompleted);
-                    },
-                };
-                const response = await axiosInstance.post("/upload_image", formData, config)
+                const fileURL = URL.createObjectURL(file);
+                uploadedFiles.push({ name: file.name, url: fileURL });
+            });
+
+            const config = {
+                onUploadProgress: (progressEvent) => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 99) / progressEvent.total);
+                    setProgressPercentage(percentCompleted);
+                },
+            };
+
+            try {
+                const response = await axiosInstance.post("/upload_image", formData, config);
                 if (response.data.status_code === 201) {
-                    const userMessage = { text: file.name, url: URL.createObjectURL(file), user: true, time: currentTime(new Date()) }
-                    setMessages((prevMessages) => [...prevMessages, userMessage])
-                    const loadingText = { text: "Loading...", user: false, time: currentTime(new Date()) }
-                    setMessages((prevMessages) => [...prevMessages, loadingText])
+                    let messages = uploadedFiles.map(file => ({
+                        text: file.name,
+                        url: file.url,
+                        user: true,
+                        time: currentTime(new Date()),
+                    }));
+
+                    setMessages(prev => [...prev, ...messages]);
+
+                    const loadingText = { text: "Loading...", user: false, time: currentTime(new Date()) };
+                    setMessages(prev => [...prev, loadingText]);
+
                     const responseMessage = response.data.data.response;
-                    const formattedHTML = responseMessage
-                        .split("\n\n")
+                    const formattedHTML = responseMessage.split("\n\n")
                         .map(paragraph => `<p>${paragraph.replace(/\n/g, '<br>')}</p>`)
                         .join("");
 
                     const botMessage = { text: formattedHTML, user: false, time: currentTime(new Date()) };
-                    setMessages((prevMessages) => [
-                        ...prevMessages.slice(0, -1),
-                        botMessage,
-                    ]);
+                    setMessages(prev => [...prev.slice(0, -1), botMessage]);
 
-                    setIsFileSelected(false)
-                    handleClose()
-
-                    setTimeout(() => {
-                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
-                    }, 1);
                 } else {
-                    const userMessage = { text: e.target.files[0].name, url: URL.createObjectURL(file), user: true, time: currentTime(new Date()) }
-                    setMessages((prevMessages) => [...prevMessages, userMessage])
-                    const loadingText = { text: "Loading...", user: false, time: currentTime(new Date()) }
-                    setMessages((prevMessages) => [...prevMessages, loadingText])
-
-                    const responseMessage = response.data.message;
-                    const botMessage = { text: responseMessage, user: false, time: currentTime(new Date()) };
-                    setMessages((prevMessages) => [
-                        ...prevMessages.slice(0, -1),
-                        botMessage,
-                    ]);
-
-                    setIsFileSelected(false)
-                    handleClose()
-
-                    setTimeout(() => {
-                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
-                    }, 1);
+                    uploadedFiles.forEach(file => handleUploadFailure(file.name, file.url, response.data.message));
                 }
-            } else {
-                setSelectedFileErrorMsg("Unsupported file format. Please upload valid file");
+            } catch (error) {
+                if (!navigator.onLine) {
+                    setSelectedFileErrorMsg("Upload interrupted. Please try again");
+                } else {
+                    uploadedFiles.forEach(file => handleUploadFailure(file.name, file.url, "Upload interrupted. Please try again"));
+                }
             }
+            setSelectedFiles("")
+            setIsFileSelected(false);
+            handleClose();
+
+            setTimeout(() => {
+                document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+            }, 1);
         } catch (err) {
             console.log(err);
+            setSelectedFileErrorMsg("An unexpected error occurred. Please try again");
         }
-    }
+    };
 
+    const handleUploadFailure = (fileName, fileUrl, errorMessage) => {
+        setMessages(prev => [
+            ...prev,
+            { text: fileName, url: fileUrl, user: true, time: currentTime(new Date()) },
+            { text: errorMessage, user: false, time: currentTime(new Date()) },
+        ]);
+        setSelectedFiles("")
+        setIsFileSelected(false);
+        handleClose();
+    };
 
     const handleSendMessage = async (text, value) => {
         if (!text.trim()) return
@@ -148,7 +171,6 @@ const ChatPage = () => {
             try {
                 let payload;
                 if (value === "suggestionResponseText") {
-                    setSelectedFileName("")
                     setSelectedFileURL("")
                     payload = {
                         "message": text,
@@ -169,7 +191,6 @@ const ChatPage = () => {
                         "message": text,
                         "flag": "False"
                     }
-                    setSelectedFileName("")
                     setSelectedFileURL("")
 
                     const userMessage = { text: text, user: true, time: currentTime(new Date()) }
@@ -250,13 +271,13 @@ const ChatPage = () => {
         <section className='chatpage-component'>
 
             <Img
-                className="body-top-image"
+                className="body-top-image d-none d-md-block"
                 src={Image.bodyTopImage}
                 alt="peoplePlusAI-logo"
             />
 
             <Img
-                className="body-bottom-image"
+                className="body-bottom-image  d-none d-md-block"
                 src={Image.bodyBottomImage}
                 alt="peoplePlusAI-logo"
             />
@@ -272,7 +293,7 @@ const ChatPage = () => {
                 </>}
             />
 
-            <div className="chat-container ">
+            <div className="chat-container">
                 <Link to="/" title='Back' className="back-icon cup"  >
                     <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44" fill="none">
                         <path d="M29.0711 21.9992L14.9289 21.9992M14.9289 21.9992L20.2322 27.3025M14.9289 21.9992L20.2322 16.6959" stroke="#005C75" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -299,7 +320,17 @@ const ChatPage = () => {
                                         <>
                                             <div className="sending-message-container">
                                                 <div className="mb-0 sending-message">
-                                                    {message.url ? (
+                                                    {Array.isArray(message.url) ? (
+                                                        message.url.map((url, idx) => (
+                                                            <img
+                                                                key={idx}
+                                                                src={url}
+                                                                alt={`selected-media-file-${idx}`}
+                                                                width="100%"
+                                                                height="150"
+                                                            />
+                                                        ))
+                                                    ) : message.url ? (
                                                         <img
                                                             src={message.url}
                                                             alt="selected-media-file"
@@ -315,12 +346,10 @@ const ChatPage = () => {
                                         </>
                                     ) : (
                                         <div className="receiving-message-container" key={index}>
-
                                             {Array.isArray(message.text) ? (
                                                 message.text.map((item, idx) => (
-                                                    <div className="default-receiving-suggestions-container">
+                                                    <div className="default-receiving-suggestions-container" key={idx}>
                                                         <p
-                                                            key={idx}
                                                             className="mb-0 cup default-receiving-suggestion"
                                                             onClick={() => handleSendMessage(item, "suggestionResponseText")}
                                                         >
@@ -331,7 +360,17 @@ const ChatPage = () => {
                                             ) : (
                                                 <>
                                                     <div className="mb-0 receiving-message">
-                                                        {message.url ? (
+                                                        {Array.isArray(message.url) ? (
+                                                            message.url.map((url, idx) => (
+                                                                <img
+                                                                    key={idx}
+                                                                    src={url}
+                                                                    alt={`received-media-file-${idx}`}
+                                                                    width="150"
+                                                                    height="150"
+                                                                />
+                                                            ))
+                                                        ) : message.url ? (
                                                             <img
                                                                 src={message.url}
                                                                 alt="received-media-file"
@@ -351,9 +390,10 @@ const ChatPage = () => {
                                         </div>
                                     )}
                                 </React.Fragment>
-                            )
+                            );
                         })
                     }
+
                     <div id="scrollView"></div>
                 </div>
 
@@ -361,7 +401,7 @@ const ChatPage = () => {
                 {/* Text area field */}
                 <div className="chat-textarea-section position-absolute d-flex align-items-center ">
                     <div className='chat-textarea-container d-flex align-items-center '>
-                        <div className='position-relative w-100 me-4 d-flex align-items-center'>
+                        <div className='position-relative w-100 me-3 me-md-4 d-flex align-items-center'>
                             <textarea
                                 className='chat-textarea-field '
                                 type="text"
@@ -370,14 +410,14 @@ const ChatPage = () => {
                                 onChange={(e) => setUserInputMessage(e.target.value)}
                                 onKeyDown={handleKeyDown}
                             />
-                            <span title='Voice record'>
+                            {/* <span title='Voice record'>
                                 <svg className='position-absolute record-icon cup' xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
                                     <path d="M10.5479 15.8337C13.3062 15.8337 15.5479 13.592 15.5479 10.8337V6.66699C15.5479 3.90866 13.3062 1.66699 10.5479 1.66699C7.78952 1.66699 5.54785 3.90866 5.54785 6.66699V10.8337C5.54785 13.592 7.78952 15.8337 10.5479 15.8337Z" stroke="#232323" strokeLinecap="round" strokeLinejoin="round" />
                                     <path d="M3.04785 9.16699V10.8337C3.04785 14.9753 6.40618 18.3337 10.5479 18.3337C14.6895 18.3337 18.0479 14.9753 18.0479 10.8337V9.16699" stroke="#232323" strokeLinecap="round" strokeLinejoin="round" />
                                     <path d="M8.13965 6.2334C9.62298 5.69173 11.2396 5.69173 12.723 6.2334" stroke="#232323" strokeLinecap="round" strokeLinejoin="round" />
                                     <path d="M8.90625 8.73359C9.90625 8.45859 10.9646 8.45859 11.9646 8.73359" stroke="#232323" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
-                            </span>
+                            </span> */}
                         </div>
                         <div className='d-flex align-items-center' title='Upload file'>
                             <svg onClick={handleShow} className="cup" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -388,7 +428,6 @@ const ChatPage = () => {
                                     <path d="M5.03733 20.2117C4.55706 20.2117 4.14594 20.0407 3.80397 19.6987C3.462 19.3568 3.29102 18.9456 3.29102 18.4654V5.53572C3.29102 5.05545 3.462 4.64433 3.80397 4.30236C4.14594 3.96039 4.55706 3.7894 5.03733 3.7894H13.4342V5.23843H5.03733C4.95055 5.23843 4.87931 5.26628 4.8236 5.32199C4.76789 5.37769 4.74004 5.44894 4.74004 5.53572V18.4654C4.74004 18.5521 4.76789 18.6234 4.8236 18.6791C4.87931 18.7348 4.95055 18.7627 5.03733 18.7627H17.967C18.0536 18.7627 18.1248 18.7348 18.1807 18.6791C18.2364 18.6234 18.2643 18.5521 18.2643 18.4654V10.0685H19.7133V18.4654C19.7133 18.9456 19.5423 19.3568 19.2003 19.6987C18.8584 20.0407 18.4472 20.2117 17.967 20.2117H5.03733ZM16.7037 8.73082V6.79878H14.7716V5.35H16.7037V3.41797H18.1527V5.35H20.0847V6.79878H18.1527V8.73082H16.7037ZM6.43057 16.5891H16.6479L13.4711 12.3536L10.759 15.8832L8.82701 13.4124L6.43057 16.5891Z" fill="#232323" />
                                 </g>
                             </svg>
-                            <div className="vertical-line"></div>
                         </div>
                     </div>
                     <div title='Send' className="send-btn-container cup" onClick={() => handleSendMessage(userInputMessage, "userInputMessage")}>
@@ -408,7 +447,7 @@ const ChatPage = () => {
 
             {/* Upload media Modal */}
             <Modal
-                className='chatpage-component-modal'
+                className='chatpage-component-modal '
                 show={show}
                 onHide={handleClose}
                 backdrop="static"
@@ -419,12 +458,10 @@ const ChatPage = () => {
                 <Modal.Header closeButton>
                     <Modal.Title>Upload Media</Modal.Title>
                 </Modal.Header>
-                <Modal.Body className='px-5 py-4'>
+                <Modal.Body className='px-3 px-md-5 py-3 py-md-5 my-3 my-md-0'>
 
-                    <div className='media-upload-container p-5'>
+                    <div className='media-upload-container p-4 p-md-5 pt-4 '>
                         {selectedFileErrorMsg && <p className='selected-media-file text-danger text-center'>{selectedFileErrorMsg}</p>}
-                        {isFileSelected && <p className='selected-media-file text-center'><b>Selected file</b> : {selectedFileName}</p>}
-
                         <div {...getRootProps()}
                             className={`drop-file-container text-center cup p-3 ${isFileSelected && 'pe-none opacity-50'}`}
                             onClick={(event) => {
@@ -438,10 +475,10 @@ const ChatPage = () => {
                                     <path d="M15.6348 7.37585C15.6339 6.78835 15.7489 6.20644 15.9732 5.66345C16.1975 5.12046 16.5267 4.62705 16.942 4.21146C17.3572 3.79588 17.8504 3.46629 18.3932 3.24157C18.936 3.01685 19.5178 2.90141 20.1053 2.90186H28.2076C29.3947 2.90186 30.5331 3.3734 31.3724 4.21276C32.2118 5.05211 32.6833 6.19052 32.6833 7.37755C32.6833 8.56458 32.2118 9.70299 31.3724 10.5423C30.5331 11.3817 29.3947 11.8532 28.2076 11.8532H20.1087C19.5206 11.8537 18.9382 11.7382 18.3948 11.5133C17.8514 11.2885 17.3576 10.9587 16.9417 10.5428C16.5259 10.127 16.1961 9.63323 15.9713 9.0898C15.7464 8.54638 15.6343 7.96395 15.6348 7.37585Z" fill="#005C75" />
                                 </svg>
                             </div>
-                            <p className='mb-0 drop-file-text'>
-                                {isDragActive ? "Drop the file here..." : "Drop file or Browse"}
+                            <p className='my-2 drop-file-text'>
+                                {isDragActive ? "Drop here..." : "Drop file(s) or Browse (Upto 5)"}
                             </p>
-                            <p className='mb-0 drop-file-sub-text'>Formats : png, jpeg, jpg, PNG, JPEG, JPG, HEIC <br /> & Max file size : 25 MB</p>
+                            <p className='mb-0 drop-file-sub-text'>Formats : png, jpg, jpeg, gif, webp, HEIC <br /> & Max file size : 25 MB</p>
                         </div>
                         <div className={`browse-file-container ${isFileSelected && 'pe-none opacity-50'}`}>
                             <ButtonComponent
@@ -463,7 +500,7 @@ const ChatPage = () => {
                         <div className='upload-progress-container mx-auto'>
                             <div className='d-flex align-items-center' >
                                 <div className='upload-text-container' >
-                                    <p className='mb-2 uploading-text'>Uploading...</p>
+                                    <p className='mb-2 uploading-text'>Uploading {selectedFiles} {Number(selectedFiles) === 1 ? "file" : "files"}...</p>
                                     <p className='mb-0 in-progress-text'>{progressPercentage}% </p>
                                 </div>
                             </div>

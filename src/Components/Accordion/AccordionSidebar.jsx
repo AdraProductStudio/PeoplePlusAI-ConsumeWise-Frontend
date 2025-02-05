@@ -5,7 +5,6 @@ const AccordionSidebar = ({
     componentForm,
     accordionData
 }) => {
-    console.log(accordionData)
 
     return (
         <Accordion defaultActiveKey="0" className='w-100 mb-3 sidebar-accordion'>

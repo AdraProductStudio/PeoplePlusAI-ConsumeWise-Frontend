@@ -87,20 +87,6 @@ const Home = () => {
                 />
 
             </div>
-            {/* <div className='homepage-button-container'>
-                <Link to="/chat" className='d-flex justify-content-center '>
-                    <ButtonComponent
-                        className={'homepage-button'}
-                        buttonName={<>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
-                                <path d="M16.676 3.30808H19.7429M21.2969 21.1108C21.6117 20.7275 21.7876 20.2071 21.7876 19.6653V7.39737C21.7876 6.85554 21.6117 6.33416 21.2969 5.95181C20.9851 5.56741 20.5598 5.35273 20.1161 5.35273H10.9346C9.17108 5.35273 8.82962 3.58308 7.29818 3.33466C7.02828 3.2907 6.74817 3.30808 6.47521 3.30808C5.50093 3.30808 5.01431 3.30808 4.63093 3.47063C4.14327 3.67791 3.75512 4.06643 3.54829 4.55429C3.38574 4.93562 3.38574 5.42224 3.38574 6.39652V19.6653C3.38574 20.2071 3.56158 20.7285 3.87646 21.1108C4.18929 21.4942 4.61458 21.7099 5.05827 21.7099H20.1151C20.5588 21.7099 20.983 21.4952 21.2969 21.1108Z" stroke="white" strokeWidth="1.75256" strokeLinecap="round" strokeLinejoin="round" />
-                                <path d="M14.1205 17.621C15.2051 17.621 16.2452 17.1901 17.0121 16.4233C17.779 15.6564 18.2098 14.6162 18.2098 13.5317C18.2098 12.4471 17.779 11.407 17.0121 10.6401C16.2452 9.87322 15.2051 9.44238 14.1205 9.44238C13.036 9.44238 11.9959 9.87322 11.229 10.6401C10.4621 11.407 10.0313 12.4471 10.0312 13.5317C10.0313 14.6162 10.4621 15.6564 11.229 16.4233C11.9959 17.1901 13.036 17.621 14.1205 17.621Z" stroke="white" strokeWidth="1.75256" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                            Take pictures of product labels</>}
-                    />
-                </Link>
-            </div> */}
-
 
             <div className='disclaimer-container mx-auto '>
                 <p className='mb-0 disclaimer-text'>Disclaimer</p>
@@ -111,9 +97,6 @@ const Home = () => {
                     <li>For queries, please contact us at <span ><a className="disclaimer-link-text" href="sonika@peopleplus.ai" target='_blank' >sonika@peopleplus.ai</a></span></li>
                 </ul>
             </div>
-
-
-
         </>
 
     )
