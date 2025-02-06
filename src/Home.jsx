@@ -19,22 +19,22 @@ const Home = () => {
         <>
 
             {/* <Img
-                className="body-bottom-image"
+                className="body-bottom-bg-image"
                 src={Image.bodyBottomImage}
                 alt="peoplePlusAI-logo"
             /> */}
 
 
             <Img
-                className="body-top-image d-none d-md-block"
+                className="body-top-bg-image d-none d-md-block"
                 src={Image.bodyTopImage}
-                alt="peoplePlusAI-logo"
+                alt="body-top-bg-image"
             />
 
             <Img
-                className="body-bottom-image  d-none d-md-block"
+                className="body-bottom-bg-image d-none d-md-block"
                 src={Image.bodyBottomImage}
-                alt="peoplePlusAI-logo"
+                alt="body-bottom-bg-image"
             />
 
             <HeaderCard
@@ -53,13 +53,14 @@ const Home = () => {
                 <Img
                     src={Image.consumerWise}
                     alt="peoplePlusAI-logo"
+                    className="peoplePlusAI-logo"
                 />
             </div>
 
 
 
             <div className='homepage-main-text text-center'>
-                <p className='mb-0'>Upgrade your <span className='special-text'>Product Search</span> experience with smart <br />tools that do the work for you!</p>
+                <p className='mb-0 px-3 px-md-5'>Upgrade your <span className='special-text'>Product Search</span> experience with smart <br />tools that do the work for you!</p>
             </div>
 
             <div className="d-flex flex-wrap justify-content-center w-100 homepage-button-container">

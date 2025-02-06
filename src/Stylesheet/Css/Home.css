@@ -1,15 +1,15 @@
-.body-top-image{
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: -1;
+.body-top-bg-image {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: -1;
 }
 
-.body-bottom-image{
-  position: fixed;
-  bottom: 1.029rem ;
-  left: 0;
-  z-index: -1;
+.body-bottom-bg-image {
+    position: fixed;
+    bottom: 1.029rem;
+    left: 0;
+    z-index: -1;
 }
 
 .homepage-main-text {
@@ -17,8 +17,7 @@
     margin-bottom: 2.4rem;
     color: #005C75;
     font-family: Poppins;
-    font-size: clamp(2rem,3vw,2.625rem);
-    /* font-size: 2.625rem; */
+    font-size: clamp(2rem, 3vw, 2.625rem);
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -29,7 +28,7 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-size: clamp(2.2rem,3vw,2.813rem);
+    font-size: clamp(2.2rem, 3vw, 2.625rem);
     font-style: normal;
     font-weight: bold;
     line-height: normal;
@@ -46,8 +45,8 @@
 
 .homepage-button {
     display: flex;
-    height: 4rem ;
-    width: 25.741rem ;
+    height: 4rem;
+    width: 25.741rem;
     padding: 0.548rem 2rem;
     justify-content: center;
     align-items: center;
@@ -57,7 +56,7 @@
     color: #FFF;
     text-align: center;
     font-family: "Segoe UI";
-    font-size: 1.5rem; 
+    font-size: 1.5rem;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -73,7 +72,7 @@
 }
 
 .disclaimer-container {
-    width:65vw;
+    width: 65vw;
     flex-shrink: 0;
     border-radius: 6px;
     background: #FFF;
@@ -113,10 +112,17 @@
 }
 
 @media (max-width: 768px) {
+    .peoplePlusAI-logo {
+        max-width: 284px;
+        width: 60%;
+        height: auto;
+    }
+
     .homepage-button {
         display: flex;
-        height: 2rem ;
-        width: 80vw ;
+        height: 2rem;
+        min-width: 60vw;
+        max-width: 80vw;
         padding: 1.2rem 1.3rem;
         justify-content: center;
         align-items: center;
@@ -126,15 +132,15 @@
         color: #FFF;
         text-align: center;
         font-family: "Segoe UI";
-        font-size: 1.06rem; 
+        font-size: 1.06rem;
         font-style: normal;
         font-weight: 400;
         line-height: normal;
     }
+
     .disclaimer-container {
-        width: 80%; 
+        width: 80%;
         margin-top: 4rem;
         padding: 0.875rem 1rem;
     }
 }
-

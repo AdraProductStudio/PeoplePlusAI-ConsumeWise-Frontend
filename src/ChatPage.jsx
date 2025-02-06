@@ -108,7 +108,7 @@ const ChatPage = () => {
             };
 
             try {
-                const response = await axiosInstance.post("/upload_image", formData, config);
+                const response = await axiosInstance.post("/upload_image", formData, config,);
                 if (response.data.status_code === 201) {
                     let messages = uploadedFiles.map(file => ({
                         text: file.name,
@@ -145,7 +145,10 @@ const ChatPage = () => {
             handleClose();
 
             setTimeout(() => {
-                document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                const scrollView = document.querySelector("#scrollView");
+                if (scrollView) {
+                    scrollView.scrollIntoView({ behavior: 'smooth' });
+                }
             }, 1);
         } catch (err) {
             console.log(err);
@@ -184,7 +187,10 @@ const ChatPage = () => {
                     setMessages((prevMessages) => [...prevMessages, loadingText])
 
                     setTimeout(() => {
-                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                        const scrollView = document.querySelector("#scrollView");
+                        if (scrollView) {
+                            scrollView.scrollIntoView({ behavior: 'smooth' });
+                        }
                     }, 1);
                 } else {
                     payload = {
@@ -201,11 +207,16 @@ const ChatPage = () => {
                     setMessages((prevMessages) => [...prevMessages, loadingText])
 
                     setTimeout(() => {
-                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                        const scrollView = document.querySelector("#scrollView");
+                        if (scrollView) {
+                            scrollView.scrollIntoView({ behavior: 'smooth' });
+                        }
                     }, 1);
                 }
 
                 const response = await axiosInstance.post("/chat", payload);
+                console.log("response",response)
+                console.log("response.data",response.data)
                 if (response.data.status_code === 200) {
                     const responseArray = response.data.data.response;
                     const botMessage = { text: responseArray, user: false, time: currentTime(new Date()) };
@@ -214,7 +225,10 @@ const ChatPage = () => {
                         botMessage,
                     ]);
                     setTimeout(() => {
-                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                        const scrollView = document.querySelector("#scrollView");
+                        if (scrollView) {
+                            scrollView.scrollIntoView({ behavior: 'smooth' });
+                        }
                     }, 1);
 
                 } else if (response.data.status_code === 201) {
@@ -230,7 +244,10 @@ const ChatPage = () => {
                         botMessage,
                     ]);
                     setTimeout(() => {
-                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                        const scrollView = document.querySelector("#scrollView");
+                        if (scrollView) {
+                            scrollView.scrollIntoView({ behavior: 'smooth' });
+                        }
                     }, 1);
                 } else {
                     const responseMessage = response.data.message;
@@ -240,7 +257,10 @@ const ChatPage = () => {
                         botMessage,
                     ]);
                     setTimeout(() => {
-                        document.querySelector("#scrollView").scrollIntoView({ behavior: 'smooth' });
+                        const scrollView = document.querySelector("#scrollView");
+                        if (scrollView) {
+                            scrollView.scrollIntoView({ behavior: 'smooth' });
+                        }
                     }, 1);
                 }
             } catch (error) {
@@ -271,15 +291,15 @@ const ChatPage = () => {
         <section className='chatpage-component'>
 
             <Img
-                className="body-top-image d-none d-md-block"
+                className="body-top-bg-image d-none d-md-block"
                 src={Image.bodyTopImage}
-                alt="peoplePlusAI-logo"
+                alt="body-top-bg-image"
             />
 
             <Img
-                className="body-bottom-image  d-none d-md-block"
+                className="body-bottom-bg-image d-none d-md-block"
                 src={Image.bodyBottomImage}
-                alt="peoplePlusAI-logo"
+                alt="body-bottom-bg-image"
             />
 
             <HeaderCard

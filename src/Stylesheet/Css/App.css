@@ -315,3 +315,15 @@ header {
   border: 1px solid var(--btn-brand-border-color) !important;
   color: var(--btn-brand-color) !important;
 }
+
+@media (max-width : 768px) {
+  .header-card {
+    padding: 0.5rem 0.625rem;
+    background-color: transparent !important;
+  }
+  .header-card img {
+    max-width: 199px; 
+    width: 40%; 
+    height: auto; 
+  }
+}
