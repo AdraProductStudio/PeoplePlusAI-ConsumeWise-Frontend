@@ -167,6 +167,15 @@ const ChatPage = () => {
         handleClose();
     };
 
+    const loadingMessage = (text) => {
+
+        setTimeout(() => {
+
+        },5000);
+
+        return text
+    }
+
     const handleSendMessage = async (text, value) => {
         if (!text.trim()) return
 
@@ -183,7 +192,8 @@ const ChatPage = () => {
                     setMessages((prevMessages) => [...prevMessages, userMessage])
                     setUserInputMessage("")
 
-                    const loadingText = { text: "Loading...", user: false, time: currentTime(new Date()) }
+                    // const loadingText = { text: "Loading...", user: false, time: currentTime(new Date()) }
+                    const loadingText = { text: loadingMessage("Loading..."), user: false, time: currentTime(new Date()) }
                     setMessages((prevMessages) => [...prevMessages, loadingText])
 
                     setTimeout(() => {
@@ -215,8 +225,8 @@ const ChatPage = () => {
                 }
 
                 const response = await axiosInstance.post("/chat", payload);
-                console.log("response",response)
-                console.log("response.data",response.data)
+                console.log("response", response)
+                console.log("response.data", response.data)
                 if (response.data.status_code === 200) {
                     const responseArray = response.data.data.response;
                     const botMessage = { text: responseArray, user: false, time: currentTime(new Date()) };
