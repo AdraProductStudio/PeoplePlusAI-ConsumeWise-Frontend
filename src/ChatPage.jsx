@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback,useRef } from 'react'
 import HeaderCard from 'Components/Card/HeaderCard'
 import './Stylesheet/Css/ChatPage.css'
 import { Link, useLocation } from 'react-router-dom'
@@ -24,11 +24,19 @@ const ChatPage = () => {
     const [userInputMessage, setUserInputMessage] = useState("");
     const [selectedFileErrorMsg, setSelectedFileErrorMsg] = useState("")
 
+    const [resReceived,setResReceived]=useState(false)
+
+    const timeouts = useRef([]);
+
+    
+
     useEffect(() => {
         if (buttonClicked === "upload-image-button") {
             handleShow()
         }
     }, [])
+
+ 
 
     const onDrop = useCallback((acceptedFiles) => {
         if (acceptedFiles && acceptedFiles.length > 0) {
@@ -166,15 +174,10 @@ const ChatPage = () => {
         setIsFileSelected(false);
         handleClose();
     };
+    
 
-    const loadingMessage = (text) => {
-
-        setTimeout(() => {
-
-        },5000);
-
-        return text
-    }
+    
+    
 
     const handleSendMessage = async (text, value) => {
         if (!text.trim()) return
@@ -182,6 +185,7 @@ const ChatPage = () => {
         if (text !== "") {
             try {
                 let payload;
+                
                 if (value === "suggestionResponseText") {
                     setSelectedFileURL("")
                     payload = {
@@ -192,9 +196,29 @@ const ChatPage = () => {
                     setMessages((prevMessages) => [...prevMessages, userMessage])
                     setUserInputMessage("")
 
-                    // const loadingText = { text: "Loading...", user: false, time: currentTime(new Date()) }
-                    const loadingText = { text: loadingMessage("Loading..."), user: false, time: currentTime(new Date()) }
-                    setMessages((prevMessages) => [...prevMessages, loadingText])
+                    
+                    
+                    setMessages((prevMessages) => [
+                        ...prevMessages,
+                        { text: "Analyzing product using data from 3,000+ peer-reviewed journal papers...", user: false, time: currentTime(new Date()) }
+                    ]);
+        
+                    // Setup timeouts for loading message 
+                    
+                    timeouts.current.push(setTimeout(() => {
+                        setMessages((prevMessages) => [
+                            ...prevMessages.slice(0, -1),
+                            { text: "This may take a few minutes...", user: false, time: currentTime(new Date()) }
+                        ]);
+                    }, 6000));
+        
+                    timeouts.current.push(setTimeout(() => {
+                        setMessages((prevMessages) => [
+                            ...prevMessages.slice(0, -1),
+                            { text: "Please wait ...", user: false, time: currentTime(new Date()) }
+                        ]);
+                    }, 10000));
+                     
 
                     setTimeout(() => {
                         const scrollView = document.querySelector("#scrollView");
@@ -225,14 +249,18 @@ const ChatPage = () => {
                 }
 
                 const response = await axiosInstance.post("/chat", payload);
-                console.log("response", response)
-                console.log("response.data", response.data)
+                
+                timeouts.current.forEach(clearTimeout);
+                timeouts.current = [];
+
                 if (response.data.status_code === 200) {
+                    setResReceived(true)
                     const responseArray = response.data.data.response;
                     const botMessage = { text: responseArray, user: false, time: currentTime(new Date()) };
                     setMessages((prevMessages) => [
                         ...prevMessages.slice(0, -1),
                         botMessage,
+        
                     ]);
                     setTimeout(() => {
                         const scrollView = document.querySelector("#scrollView");
@@ -297,6 +325,8 @@ const ChatPage = () => {
         return time
     }
 
+   
+
     return (
         <section className='chatpage-component'>
 
@@ -340,6 +370,7 @@ const ChatPage = () => {
                                 <path d="M20.1289 21.8676C20.6708 23.5033 21.9078 23.6669 22.8585 22.2356C23.7275 20.927 23.155 19.8536 21.5806 19.8536C20.4152 19.8434 19.7609 20.7532 20.1289 21.8676Z" stroke="#969696" strokeWidth="1.75256" strokeLinecap="round" strokeLinejoin="round" />
                             </svg>
                             <span>Start searching..</span>
+
                         </div>
                     }
                     {
@@ -381,7 +412,10 @@ const ChatPage = () => {
                                                     <div className="default-receiving-suggestions-container" key={idx}>
                                                         <p
                                                             className="mb-0 cup default-receiving-suggestion"
-                                                            onClick={() => handleSendMessage(item, "suggestionResponseText")}
+                                                            onClick={() => handleSendMessage(item, "suggestionResponseText")
+                                    
+                                                            
+                                                        }
                                                         >
                                                             {item}
                                                         </p>
