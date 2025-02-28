@@ -237,8 +237,26 @@ const ChatPage = () => {
                     setMessages((prevMessages) => [...prevMessages, userMessage])
                     setUserInputMessage("")
 
-                    const loadingText = { text: "Loading...", user: false, time: currentTime(new Date()) }
-                    setMessages((prevMessages) => [...prevMessages, loadingText])
+                    setMessages((prevMessages) => [
+                        ...prevMessages,
+                        { text: "Analyzing product using data from 3,000+ peer-reviewed journal papers...", user: false, time: currentTime(new Date()) }
+                    ]);
+        
+                    // Setup timeouts for loading message 
+                    
+                    timeouts.current.push(setTimeout(() => {
+                        setMessages((prevMessages) => [
+                            ...prevMessages.slice(0, -1),
+                            { text: "This may take a few minutes...", user: false, time: currentTime(new Date()) }
+                        ]);
+                    }, 6000));
+        
+                    timeouts.current.push(setTimeout(() => {
+                        setMessages((prevMessages) => [
+                            ...prevMessages.slice(0, -1),
+                            { text: "Please wait ...", user: false, time: currentTime(new Date()) }
+                        ]);
+                    }, 10000));
 
                     setTimeout(() => {
                         const scrollView = document.querySelector("#scrollView");

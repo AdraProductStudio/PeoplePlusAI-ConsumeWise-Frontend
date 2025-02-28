@@ -26,13 +26,13 @@ const Home = () => {
 
 
             <Img
-                className="body-top-bg-image d-none d-md-block"
+                className="body-top-bg-image d-none d-lg-block"
                 src={Image.bodyTopImage}
                 alt="body-top-bg-image"
             />
 
             <Img
-                className="body-bottom-bg-image d-none d-md-block"
+                className="body-bottom-bg-image d-none d-lg-block"
                 src={Image.bodyBottomImage}
                 alt="body-bottom-bg-image"
             />
