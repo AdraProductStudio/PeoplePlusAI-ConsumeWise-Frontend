@@ -12,7 +12,7 @@ const Home = () => {
     const navigate = useNavigate();
 
     const handleNavigation = () => {
-        navigate('/chat', { state: { buttonClicked: 'upload-image-button' } });
+        navigate('/chat', { state: { buttonClickedFromHome: 'upload-image-button' } });
     };
 
     return (

@@ -41,6 +41,12 @@
   cursor: pointer;
 }
 
+.disabled {
+  pointer-events: none !important;
+  opacity: 0.5 !important; 
+  cursor: not-allowed !important;
+}
+
 .spinner-border {
   --bs-spinner-width: 1.5rem !important;
   --bs-spinner-height: 1.5rem !important;

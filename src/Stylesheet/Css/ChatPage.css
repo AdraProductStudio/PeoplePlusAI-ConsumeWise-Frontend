@@ -383,7 +383,146 @@
     }
 
     .chatpage-component .receiving-message-container {
+        margin-bottom: 4rem;
+    }
+
+    .chatpage-component .sending-message {
+        max-width: 85%;
+        word-wrap: break-word;
+    }
+
+    .chatpage-component .receiving-message {
+        max-width: 85%;
+        word-wrap: break-word;
+    }
+
+    .chatpage-component .sending-message-time {
+        font-size: 0.65rem !important;
+    }
+
+    .chatpage-component .receiving-message-time {
+        font-size: 0.65rem !important;
+    }
+
+
+    .chatpage-component .chat-textarea-section {
+        left: 0rem;
+        bottom: 2.313rem;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    .chatpage-component .chat-textarea-container {
+        border-radius: 4px 0px 0px 4px;
+        background: #B6D4DA;
+        height: 3.125rem;
+        width: 100%;
+        padding: 0 0.8rem;
+        padding-left: 0.5rem;
+    }
+
+    .chatpage-component .chat-textarea-field {
+        height: 2.5rem;
+        border-radius: 5px;
+        background: #FFF;
+        resize: none;
+        border: none;
+        outline: none;
+        line-height: 2.5rem;
+        padding: 0 0.625rem;
+        width: 100%;
+        margin: auto 0;
+    }
+
+    .chatpage-component .record-icon {
+        position: absolute;
+        right: 0.6rem;
+        top: 0.7rem;
+    }
+
+    .chatpage-component .send-btn-container {
+        display: flex;
+        width: 3.113rem;
+        height: 3.125rem;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        border-radius: 0px 4px 4px 0px;
+        background: #005C75;
+    }
+
+    .chatpage-component-modal .media-upload-container .drop-file-container {
+        margin-top: 1.023rem;
+        border-radius: 8.882px 8.882px 0px 0px;
+        border: 1.11px dashed #005C75;
+        padding: 0.5rem !important;
+        margin-left: 0.3rem;
+        margin-right: 0.3rem;
+        max-width: 100%;
+    }
+
+    .chatpage-component-modal .media-upload-container .drop-file-container .drop-file-text {
+        font-size: 0.875rem;
+    }
+
+    .chatpage-component-modal .media-upload-container .drop-file-container .drop-file-sub-text {
+        font-size: 0.771rem;
+    }
+
+    .chatpage-component-modal .media-upload-container .browse-file-container .browse-text {
+        margin-left: 0.726rem;
+        font-family: Inter;
+        font-size: 0.885rem;
+    }
+    
+    .chatpage-component-modal .media-upload-container .browse-file-container .browse-file-sub-text {
+        font-size: 0.771rem;
+    }
+
+    .chatpage-component-modal .upload-progress-container .uploading-text {
+        font-size: 0.895rem;
+    }
+    
+    .chatpage-component-modal .upload-progress-container .in-progress-text {
+        font-size: 0.895rem;;
+    }
+
+
+}
+@media (max-height : 600px) {
+
+    .chatpage-component * {
+        font-size: 0.875rem !important;
+    }
+
+    .chatpage-component .start-searching-text svg {
+        width: 20px;
+    }
+
+    .chatpage-component .start-searching-text {
+        font-size: 14px !important;
+    }
+
+    .chatpage-component .chat-container {
+        position: relative;
+        width: 90vw;
+        margin: 0 auto;
+        height: 80vh;
+        border-radius: 18px;
+        background: #FFF;
+        padding: 1.2rem 1rem;
+    }
+
+    .chatpage-component .default-receiving-suggestion {
+        padding: 0.9rem;
+    }
+
+    .chatpage-component .sending-message-container {
         margin-bottom: 1.5rem;
+    }
+
+    .chatpage-component .receiving-message-container {
+        margin-bottom: 4rem;
     }
 
     .chatpage-component .sending-message {
