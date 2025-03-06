@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import HeaderCard from 'Components/Card/HeaderCard'
 import './Stylesheet/Css/ChatPage.css'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Image from 'Utils/Image'
 import Img from 'Components/Img/Img'
 import Modal from 'react-bootstrap/Modal';
@@ -12,6 +12,8 @@ import { useDropzone } from "react-dropzone";
 
 
 const ChatPage = () => {
+
+    const navigate = useNavigate();
 
     const location = useLocation();
     const { buttonClickedFromHome } = location.state || {};
@@ -370,12 +372,14 @@ const ChatPage = () => {
             <HeaderCard
                 cardClassName='border-0 header-card'
                 cardTitleClassName="justify-content-start mb-0"
-                cardContent={<>
+                cardContent={<div onClick={() => navigate("/")}>
                     <Img
                         src={Image.CompanyLogo}
+                        className="cup"
                         alt="peoplePlusAI-logo"
                     />
-                </>}
+                </div>
+                }
             />
 
             <div className="chat-container">
@@ -550,7 +554,7 @@ const ChatPage = () => {
                     <div className='media-upload-container p-4 p-md-5 pt-4'>
                         {selectedFileErrorMsg && <p className='selected-media-file text-danger text-center'>{selectedFileErrorMsg}</p>}
                         <div {...getRootProps()}
-                            className={`mb-4 drop-file-container text-center cup p-3 ${isFileSelected && 'pe-none opacity-50'}`}
+                            className={`mb-4 drop-file-container text-center cup p-3 ${isDragActive && 'drag-active'} ${isFileSelected && 'pe-none opacity-50'}`}
                             onClick={(event) => {
                                 event.stopPropagation();
                                 handleFileUploadClick();
@@ -563,7 +567,7 @@ const ChatPage = () => {
                                 </svg>
                             </div>
                             <p className='my-2 drop-file-text'>
-                                {isDragActive ? "Drop here..." : "Browse up to 5 files"}
+                                {isDragActive ? "Drop here..." : "Browse or Drag & Drop  up to 5 files"}
                             </p>
                             <p className='mb-0 drop-file-sub-text'>Formats : png, jpg, jpeg, gif, webp <br /> & Max file size : 25 MB</p>
                         </div>

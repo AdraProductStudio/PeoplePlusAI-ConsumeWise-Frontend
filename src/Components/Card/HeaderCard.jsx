@@ -12,7 +12,7 @@ const HeaderCard = ({
     return (
         <Card className={cardClassName}>
             <Card.Body className={cardBodyClassName}>
-                <Card.Title className={cardTitleClassName}>
+                <Card.Title className={cardTitleClassName} >
                     {cardContent}
                 </Card.Title>
             </Card.Body>

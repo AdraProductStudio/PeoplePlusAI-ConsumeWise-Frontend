@@ -600,6 +600,10 @@
         max-width: 100%;
     }
 
+    .chatpage-component-modal .media-upload-container .drop-file-container.drag-active {
+        background-color: red !important;
+    }
+
     .chatpage-component-modal .media-upload-container .drop-file-container .drop-file-text {
         font-size: 0.875rem;
     }

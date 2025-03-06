@@ -111,6 +111,15 @@
     text-decoration: none;
 }
 
+.instruction-modal .modal-dialog *{
+    font-family: Inter !important;
+}
+
+.instruction-modal .close-button{
+    background: #005C75;
+    color: #fff;
+}
+
 @media (max-width: 768px) {
     .peoplePlusAI-logo {
         max-width: 284px;

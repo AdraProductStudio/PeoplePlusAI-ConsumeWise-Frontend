@@ -1,15 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'Utils/Image'
 import Img from 'Components/Img/Img'
 import HeaderCard from 'Components/Card/HeaderCard'
 import './Stylesheet/Css/Home.css'
 import ButtonComponent from 'Components/Button/Button'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import Modal from 'react-bootstrap/Modal';
+import { BsInfoSquareFill } from "react-icons/bs";
+
 
 
 const Home = () => {
 
     const navigate = useNavigate();
+
+    const [modalShow, setModalShow] = useState(false);
+
 
     const handleNavigation = () => {
         navigate('/chat', { state: { buttonClickedFromHome: 'upload-image-button' } });
@@ -17,14 +23,6 @@ const Home = () => {
 
     return (
         <>
-
-            {/* <Img
-                className="body-bottom-bg-image"
-                src={Image.bodyBottomImage}
-                alt="peoplePlusAI-logo"
-            /> */}
-
-
             <Img
                 className="body-top-bg-image d-none d-lg-block"
                 src={Image.bodyTopImage}
@@ -40,12 +38,18 @@ const Home = () => {
             <HeaderCard
                 cardClassName='border-0 header-card'
                 cardTitleClassName="justify-content-start mb-0"
-                cardContent={<>
-                    <Img
-                        src={Image.CompanyLogo}
-                        alt="peoplePlusAI-logo"
-                    />
-                </>}
+                cardContent={<div className='d-flex justify-content-between align-items-center'>
+                    <div onClick={() => navigate("/")}>
+                        <Img
+                            src={Image.CompanyLogo}
+                            className="cup"
+                            alt="peoplePlusAI-logo"
+                        />
+                    </div>
+                    <div className='cup gap-2' onClick={() => setModalShow(true)}>
+                        <BsInfoSquareFill size={45} style={{ color: '#005C75' }} />
+                    </div>
+                </div>}
             />
 
 
@@ -98,6 +102,48 @@ const Home = () => {
                     <li>For queries, please contact us at <span ><a className="disclaimer-link-text" href="sonika@peopleplus.ai" target='_blank' >sonika@peopleplus.ai</a></span></li>
                 </ul>
             </div>
+
+            {/* Instructions Modal */}
+            <Modal
+                className='instruction-modal'
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                backdrop="static"
+            >
+
+                <Modal.Body >
+                    <h2 className='my-3 mb-4 text-center ' style={{ color: '#005C75' }}>Welcome to ConsumeWise! </h2>
+
+                    <p className='px-3 mb-4' style={{ fontWeight: '450', fontSize: '16px' }}>
+                        ConsumeWise is your personal AI-powered assistant for evaluating consumer products instantly - just upload an image or search by name, and receive clear analyses on nutrition, ingredients, health risks, and claims accuracy.
+                    </p>
+                    <div>
+                        <h5 className='px-3 mb-3'>How to Use ConsumeWise</h5>
+                        <div className='px-3 px-md-4' style={{ color: '#666', fontSize: '15px' }}>
+                            <p>Choose How You Search
+                                Click "Search for products" to enter product names manually.
+                                Or select "Upload images/screenshots" to analyze directly from images.
+                                Upload Product Images</p>
+                            <p>Browse or drag-and-drop images/screenshots (up to 5 files).
+                                Wait for the quick AI analysis.
+                                Review the AI Analysis</p>
+                            <p>Get insights on product health, ingredients, nutrition, and potential risks.
+                                Easily spot misleading claims or unhealthy ingredients.</p>
+                            <p>Explore Suggested Products
+                                View previously analyzed products or choose new ones from suggested options.</p>
+                        </div>
+                    </div>
+                    <div className="mx-3">
+                        <button className="btn close-button w-100 my-3 px-5" onClick={() => setModalShow(false)}>Close</button>
+                    </div>
+                </Modal.Body>
+
+            </Modal>
+
+
         </>
 
     )
