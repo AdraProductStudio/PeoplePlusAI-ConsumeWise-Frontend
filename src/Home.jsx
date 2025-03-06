@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'Utils/Image'
 import Img from 'Components/Img/Img'
 import HeaderCard from 'Components/Card/HeaderCard'
@@ -16,6 +16,13 @@ const Home = () => {
 
     const [modalShow, setModalShow] = useState(false);
 
+    useEffect(() => {
+        const isFirstVisit = sessionStorage.getItem("isConsumeWiseFirstVisit");
+        if (!isFirstVisit) {
+            setModalShow(true);
+            sessionStorage.setItem("isConsumeWiseFirstVisit", "true"); 
+        }
+    }, []);
 
     const handleNavigation = () => {
         navigate('/chat', { state: { buttonClickedFromHome: 'upload-image-button' } });
@@ -99,11 +106,12 @@ const Home = () => {
                     <li>The solution provided herein is a prototype in the research phase, intended for informational and testing purposes only. We make no warranties, express or implied, regarding the completeness, accuracy, reliability, suitability, or availability of the prototype or the information it provides. Any reliance you place on such information is strictly at your own risk.</li>
                     <li>The information provided through this prototype may include data from third parties, which have not been independently verified. The inclusion of such information does not imply endorsement or accuracy. All statements are intended as fair commentary based on data available in the public domain at the time of research and are not intended to harm, disadvantage, or negatively impact any individual, organization, or product.</li>
                     <li>This prototype is developed as part of a fellowship program offered by EkStep Foundation through its People+ai initiative. EkStep Foundation disclaims all liability for any loss or damage arising from the use of this prototype. By using this prototype, you acknowledge and agree to these terms and release us from any and all related liability.</li>
-                    <li>For queries, please contact us at <span ><a className="disclaimer-link-text" href="sonika@peopleplus.ai" target='_blank' >sonika@peopleplus.ai</a></span></li>
+                    <li>For queries, please contact us at <span ><a className="disclaimer-link-text" href="mailto:sonika@peopleplus.ai" target='_blank' >sonika@peopleplus.ai</a></span></li>
                 </ul>
             </div>
 
             {/* Instructions Modal */}
+
             <Modal
                 className='instruction-modal'
                 show={modalShow}
@@ -142,6 +150,7 @@ const Home = () => {
                 </Modal.Body>
 
             </Modal>
+
 
 
         </>

@@ -280,7 +280,13 @@
 
 /* ----------------------------------------------------
     404 Area
----------------------------------------------------- */
+
+    ---------------------------------------------------- */
+
+.page-not-found-component *{
+  font-family: Inter;
+}
+
 .mb-120 {
   margin-bottom: 120px !important;
 }
@@ -293,13 +299,7 @@
   margin-top: 15rem;
 }
 
-.error-img img {
-  width: 40rem;
-}
 
-.error-404-inner .btn-wrapper {
-  margin-top: 50px;
-}
 
 .error-404-title {
   font-size: 120px;
@@ -315,9 +315,7 @@
   margin-bottom: 0;
 }
 
-.ltn__404-area-1 h2 {
-  font-size: 60px;
-}
+
 
 /* 404 area 2 */
 .ltn__404-area-2 {
@@ -335,6 +333,7 @@
 }
 
 
+
 .recharts-layer.recharts-pie-sector path:focus {
   outline: none !important;
 }
@@ -344,9 +343,6 @@
     font-size: 200px;
   }
 
-  .ltn__404-area-1 h2 {
-    font-size: 30px;
-  }
 }
 
 @media (max-width: 991px) {
@@ -366,9 +362,6 @@
     font-size: 100px;
   }
 
-  .ltn__404-area-1 h2 {
-    font-size: 20px;
-  }
 }
 
 /* interview rounds  */

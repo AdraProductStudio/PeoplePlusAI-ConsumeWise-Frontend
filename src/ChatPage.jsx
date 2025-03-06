@@ -501,14 +501,6 @@ const ChatPage = () => {
                                 onChange={(e) => setUserInputMessage(e.target.value)}
                                 onKeyDown={handleKeyDown}
                             />
-                            {/* <span title='Voice record'>
-                                <svg className='position-absolute record-icon cup' xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20" fill="none">
-                                    <path d="M10.5479 15.8337C13.3062 15.8337 15.5479 13.592 15.5479 10.8337V6.66699C15.5479 3.90866 13.3062 1.66699 10.5479 1.66699C7.78952 1.66699 5.54785 3.90866 5.54785 6.66699V10.8337C5.54785 13.592 7.78952 15.8337 10.5479 15.8337Z" stroke="#232323" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M3.04785 9.16699V10.8337C3.04785 14.9753 6.40618 18.3337 10.5479 18.3337C14.6895 18.3337 18.0479 14.9753 18.0479 10.8337V9.16699" stroke="#232323" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M8.13965 6.2334C9.62298 5.69173 11.2396 5.69173 12.723 6.2334" stroke="#232323" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M8.90625 8.73359C9.90625 8.45859 10.9646 8.45859 11.9646 8.73359" stroke="#232323" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </span> */}
                         </div>
                         <div className={`d-flex align-items-center ${loading ? "disabled " : ""}`} onClick={handleShow} title='Upload file'>
                             <svg className="cup" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -571,20 +563,6 @@ const ChatPage = () => {
                             </p>
                             <p className='mb-0 drop-file-sub-text'>Formats : png, jpg, jpeg, gif, webp <br /> & Max file size : 25 MB</p>
                         </div>
-                        {/* <div className={`browse-file-container ${isFileSelected && 'pe-none opacity-50'}`}>
-                            <ButtonComponent
-                                buttonName={
-                                    <div className='d-flex align-items-center justify-content-center'>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-                                            <path d="M21.1185 15.1459V19.0179C21.1185 19.5314 20.9145 20.0238 20.5515 20.3869C20.1884 20.75 19.696 20.954 19.1825 20.954H5.63036C5.11689 20.954 4.62446 20.75 4.26138 20.3869C3.89831 20.0238 3.69434 19.5314 3.69434 19.0179V15.1459M17.2465 8.36984L12.4064 3.52979M12.4064 3.52979L7.56638 8.36984M12.4064 3.52979V15.1459" stroke="#005C75" strokeWidth="1.74242" strokeLinecap="round" strokeLinejoin="round" />
-                                        </svg>
-                                        <span className='browse-text'>Browse</span>
-                                    </div>}
-                                className="btn browse-button mx-auto d-block"
-                                clickFunction={handleFileUploadClick}
-                            />
-                            <p className='mb-0 browse-file-sub-text'>Or Drop files in the drop zone above</p>
-                        </div> */}
                     </div>
                     {
                         isFileSelected === true &&
