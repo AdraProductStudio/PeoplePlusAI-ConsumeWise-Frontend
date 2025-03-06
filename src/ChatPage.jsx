@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import ButtonComponent from 'Components/Button/Button'
 import axiosInstance from 'Services/axiosInstance'
 import { useDropzone } from "react-dropzone";
+import { toast } from 'react-toastify'
 
 
 
@@ -55,7 +56,10 @@ const ChatPage = () => {
         multiple: true,
     });
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setSelectedFileErrorMsg("")
+        setShow(false);
+    }
     const handleShow = () => setShow(true);
 
     const handleFileUploadClick = (e) => {
@@ -75,6 +79,13 @@ const ChatPage = () => {
             const validExtensions = [".png", ".jpg", ".jpeg", ".gif", ".webp"];
 
             if (!files.length) return;
+
+            if (files.length > 5) {
+                toast.warn(<>
+                    <p className='mb-0' style={{ fontFamily: "Inter" }}>Please upload up to 5 images</p>
+                </>)
+                return
+            }
 
             files = files.slice(0, MAX_FILES);
 

@@ -75,7 +75,7 @@ const Home = () => {
             </div>
 
             <div className="d-flex flex-wrap justify-content-center w-100 homepage-button-container">
-                <Link to="/chat">
+                <div onClick={() => navigate("/chat")}>
                     <ButtonComponent
                         className={'homepage-button'}
                         buttonName={<>
@@ -85,7 +85,7 @@ const Home = () => {
                             </svg>
                             Search for products</>}
                     />
-                </Link>
+                </div>
 
                 <ButtonComponent
                     className={'homepage-button'}
