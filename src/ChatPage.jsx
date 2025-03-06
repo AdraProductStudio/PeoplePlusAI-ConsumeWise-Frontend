@@ -44,7 +44,6 @@ const ChatPage = () => {
 
     const onDrop = useCallback((acceptedFiles) => {
         if (acceptedFiles && acceptedFiles.length > 0) {
-            setIsFileSelected(true);
             handleFileUploadChange(acceptedFiles, "dragAndDrop");
         } else {
             setSelectedFileErrorMsg("No files selected.");
